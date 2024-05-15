@@ -11,7 +11,7 @@ import IconButton from '@mui/material/IconButton';
 import { alpha, useTheme } from '@mui/material/styles';
 import InputAdornment from '@mui/material/InputAdornment';
 
-// // Dummy Logo component
+// Dummy Logo component
 // const Logo = (props) => <div style={{ fontSize: 24, fontWeight: 'bold' }}>Logo</div>;
 
 // Dummy bgGradient function
@@ -94,7 +94,7 @@ export default function LoginView() {
         }}
       /> */}
 
-      <Stack alignItems="center" justifyContent="center" sx={{ height: 1 }}>
+      <Stack alignItems="center" justifyContent="center" sx={{ height: 1, mt: -30 }}>
         <Card
           sx={{
             p: 5,

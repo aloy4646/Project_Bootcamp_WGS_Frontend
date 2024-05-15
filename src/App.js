@@ -1,40 +1,94 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import { ThemeProvider, createTheme, CssBaseline, AppBar, Toolbar, Typography, Button } from '@mui/material';
+import {
+  ThemeProvider,
+  createTheme,
+  CssBaseline,
+  AppBar,
+  Toolbar,
+  Typography,
+  // Button,
+  Drawer,
+  List,
+  ListItem,
+  ListItemText,
+  // ListItemIcon,
+  // Divider,
+  Box,
+} from '@mui/material';
 import Home from './pages/Home';
+import ListKaryawan from './pages/ListKaryawan';
+import ListUpdateRequest from './pages/ListUpdateRequest';
 import AddCertificate from './pages/AddCertificate';
 import DetailKaryawan from './pages/DetailKaryawan';
 import Login from './pages/Login';
+import DetailUpdateRequest from './pages/DetailUpdateRequest';
 
 const theme = createTheme();
+
+const drawerWidth = 240;
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Router>
-        <AppBar position="static">
-          <Toolbar>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              Company Name
-            </Typography>
-            <Button color="inherit" component={Link} to="/">
-              Home Page
-            </Button>
-            <Button color="inherit" component={Link} to="/sertifikat/form">
-              Add a Certificate
-            </Button>
-            <Button color="inherit" component={Link} to="/login">
-              Login
-            </Button>
-          </Toolbar>
-        </AppBar>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/sertifikat/form" element={<AddCertificate />} />
-          <Route path="/karyawan/:id" element={<DetailKaryawan />} />
-          <Route path="/login" element={<Login />} />
-        </Routes>
+        <Box sx={{ display: 'flex' }}>
+          <Drawer
+            variant="permanent"
+            sx={{
+              width: drawerWidth,
+              flexShrink: 0,
+              '& .MuiDrawer-paper': {
+                width: drawerWidth,
+                boxSizing: 'border-box',
+              },
+            }}
+          >
+            <Toolbar />
+            <Box sx={{ overflow: 'auto' }}>
+              <List>
+                <ListItem button component={Link} to="/">
+                  <ListItemText primary="Home Page" />
+                </ListItem>
+                <ListItem button component={Link} to="/karyawan/list">
+                  <ListItemText primary="List Karyawan" />
+                </ListItem>
+                <ListItem button component={Link} to="/karyawan/update-request">
+                  <ListItemText primary="List Update Request" />
+                </ListItem>
+                <ListItem button component={Link} to="/sertifikat/form">
+                  <ListItemText primary="Add a Certificate" />
+                </ListItem>
+                <ListItem button component={Link} to="/login">
+                  <ListItemText primary="Login" />
+                </ListItem>
+              </List>
+            </Box>
+          </Drawer>
+          <Box
+            component="main"
+            sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3 }}
+          >
+            <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+              <Toolbar>
+                <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
+                  Company Name
+                </Typography>
+              </Toolbar>
+            </AppBar>
+            <Toolbar />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/karyawan/list" element={<ListKaryawan />} />
+              <Route path="/karyawan/update-request" element={<ListUpdateRequest />} />
+              <Route path="/karyawan/update-request/:id" element={<DetailUpdateRequest />} />
+              <Route path="/sertifikat/form" element={<AddCertificate />} />
+              <Route path="/karyawan/:id" element={<DetailKaryawan />} />
+              <Route path="/login" element={<Login />} />
+            </Routes>
+          </Box>
+        </Box>
       </Router>
     </ThemeProvider>
   );
