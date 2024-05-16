@@ -111,6 +111,25 @@ function DetailKaryawan() {
         </Button>
       </Grid>
       <Divider sx={{ my: 1 }} />
+      <Grid item xs={12}>
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={() => navigate(`/karyawan/logs/${detailKaryawan.id}`)}
+          sx={{ marginRight: 1 }}
+        >
+          Logs
+        </Button>
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={() => navigate(`/karyawan/histories/${detailKaryawan.id}`)}
+          sx={{ marginRight: 1 }}
+        >
+          Histories
+        </Button>
+      </Grid>
+      <Divider sx={{ my: 1 }} />
       <Grid container spacing={2}>
         <Grid item xs={12} md={6}>
           <Paper elevation={3} sx={{ padding: 2 }}>

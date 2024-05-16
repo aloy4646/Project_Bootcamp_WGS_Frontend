@@ -1,5 +1,5 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import React from 'react'
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 import {
   ThemeProvider,
   createTheme,
@@ -15,20 +15,22 @@ import {
   // ListItemIcon,
   // Divider,
   Box,
-} from '@mui/material';
-import Home from './pages/Home';
-import ListKaryawan from './pages/ListKaryawan';
-import ListUpdateRequest from './pages/ListUpdateRequest';
-import AddCertificate from './pages/AddCertificate';
-import DetailKaryawan from './pages/DetailKaryawan';
-import Login from './pages/Login';
-import DetailUpdateRequest from './pages/DetailUpdateRequest';
-import FormUserData from './pages/FormUserData';
-import FormUserDokumen from './pages/FormUserDokumen';
+} from '@mui/material'
+import Home from './pages/Home'
+import ListKaryawan from './pages/ListKaryawan'
+import ListUpdateRequest from './pages/ListUpdateRequest'
+import AddCertificate from './pages/AddCertificate'
+import DetailKaryawan from './pages/DetailKaryawan'
+import Login from './pages/Login'
+import DetailUpdateRequest from './pages/DetailUpdateRequest'
+import FormUserData from './pages/FormUserData'
+import FormUserDokumen from './pages/FormUserDokumen'
+import ListLogs from './pages/ListLogs'
+import ListHistories from './pages/ListHistories'
 
-const theme = createTheme();
+const theme = createTheme()
 
-const drawerWidth = 240;
+const drawerWidth = 240
 
 function App() {
   return (
@@ -72,9 +74,17 @@ function App() {
             component="main"
             sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3 }}
           >
-            <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+            <AppBar
+              position="fixed"
+              sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+            >
               <Toolbar>
-                <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
+                <Typography
+                  variant="h6"
+                  noWrap
+                  component="div"
+                  sx={{ flexGrow: 1 }}
+                >
                   Company Name
                 </Typography>
               </Toolbar>
@@ -87,6 +97,8 @@ function App() {
               <Route path="/karyawan/update-request/:update_requestId" element={<DetailUpdateRequest />} />
               <Route path="/karyawan/update/form/data/:id" element={<FormUserData />} />
               <Route path="/karyawan/update/form/dokumen/:id" element={<FormUserDokumen />} />
+              <Route path="/karyawan/logs/:id" element={<ListLogs />} />
+              <Route path="/karyawan/histories/:id" element={<ListHistories />} />
               <Route path="/sertifikat/form" element={<AddCertificate />} />
               <Route path="/karyawan/:id" element={<DetailKaryawan />} />
               <Route path="/login" element={<Login />} />
@@ -95,7 +107,7 @@ function App() {
         </Box>
       </Router>
     </ThemeProvider>
-  );
+  )
 }
 
-export default App;
+export default App
