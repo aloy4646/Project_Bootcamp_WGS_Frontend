@@ -26,6 +26,7 @@ function formatDateToWIB(dateString) {
 
 const headLabel = [
   { id: 'no', label: 'No' },
+  { id: 'email_kantor', label: 'Email Kantor' },
   { id: 'nama_lengkap', label: 'Nama Lengkap' },
   { id: 'date', label: 'Tanggal' },
   { id: 'message', label: 'Pesan' },
@@ -43,6 +44,13 @@ export default function ListUpdateRequest() {
       setListUpdateRequest(response.data.update_requests)
     })
   }, [])
+
+  const cekData = (data) => {
+    if (!data){
+      return <TableCell sx={{ fontStyle: 'italic', opacity: 0.8 }}>No Data</TableCell>
+    }
+    return <TableCell>{data}</TableCell>
+  }
 
   return (
     <Container>
@@ -68,7 +76,8 @@ export default function ListUpdateRequest() {
                   <TableCell component="th" scope="row">
                     {index + 1}
                   </TableCell>
-                  <TableCell>{update_request.nama_lengkap}</TableCell>
+                  <TableCell>{update_request.email_kantor}</TableCell>
+                  {cekData(update_request.nama_lengkap)}
                   <TableCell>{formatDateToWIB(update_request.date)}</TableCell>
                   <TableCell>{update_request.message}</TableCell>
                   <TableCell>

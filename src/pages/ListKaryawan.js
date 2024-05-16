@@ -16,9 +16,9 @@ import {
 import axios from 'axios'
 const headLabel = [
   { id: 'no', label: 'No' },
-  { id: 'email_kantor', label: 'Email Kantor' },
   { id: 'nama_lengkap', label: 'Nama Lengkap' },
   { id: 'nama_panggilan', label: 'Nama Panggilan' },
+  { id: 'email_kantor', label: 'Email Kantor' },
   { id: 'action', label: 'Action' },
 ]
 
@@ -33,6 +33,13 @@ export default function ListKaryawan() {
       setListKaryawan(response.data.listKaryawan)
     })
   }, [])
+
+  const cekData = (data) => {
+    if (!data){
+      return <TableCell sx={{ fontStyle: 'italic', opacity: 0.8 }}>No Data</TableCell>
+    }
+    return <TableCell>{data}</TableCell>
+  }
 
   return (
     <Container>
@@ -58,9 +65,9 @@ export default function ListKaryawan() {
                   <TableCell component="th" scope="row">
                     {index + 1}
                   </TableCell>
+                  {cekData(karyawan.nama_lengkap)}
+                  {cekData(karyawan.nama_panggilan)}
                   <TableCell>{karyawan.email_kantor}</TableCell>
-                  <TableCell>{karyawan.nama_lengkap}</TableCell>
-                  <TableCell>{karyawan.nama_panggilan}</TableCell>
                   <TableCell>
                     <Button
                       variant="contained"

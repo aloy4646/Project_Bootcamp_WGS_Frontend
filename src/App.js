@@ -23,6 +23,7 @@ import AddCertificate from './pages/AddCertificate';
 import DetailKaryawan from './pages/DetailKaryawan';
 import Login from './pages/Login';
 import DetailUpdateRequest from './pages/DetailUpdateRequest';
+import FormUser from './pages/FormUser';
 
 const theme = createTheme();
 
@@ -82,7 +83,8 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/karyawan/list" element={<ListKaryawan />} />
               <Route path="/karyawan/update-request" element={<ListUpdateRequest />} />
-              <Route path="/karyawan/update-request/:id" element={<DetailUpdateRequest />} />
+              <Route path="/karyawan/update-request/:update_requestId" element={<DetailUpdateRequest />} />
+              <Route path="/karyawan/update/form/:id" element={<FormUser />} />
               <Route path="/sertifikat/form" element={<AddCertificate />} />
               <Route path="/karyawan/:id" element={<DetailKaryawan />} />
               <Route path="/login" element={<Login />} />

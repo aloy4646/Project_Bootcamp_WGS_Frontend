@@ -1,28 +1,33 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import { Container, Typography, Grid, Paper, Divider, Box } from '@mui/material'
-import { format, toZonedTime } from 'date-fns-tz'
-
-function formatDateToWIB(dateString) {
-  const date = new Date(dateString);
-  const timeZone = 'Asia/Jakarta';
-  const zonedDate = toZonedTime(date, timeZone);
-  return format(zonedDate, 'yyyy-MM-dd', { timeZone });
-}
+import { Container, Typography, Grid, Paper, Divider, Box, Button } from '@mui/material'
 
 function isFilePath(value) {
   return typeof value === 'string' && value.includes('\\');
+}
+
+const formatTanggal = (tanggal) => {
+  //format tanggal menjadi yyyy-mm-dd
+  return tanggal ? new Date(tanggal).toISOString().split('T')[0] : ''
 }
 
 function DetailKaryawan() {
   const { id } = useParams()
   const [detailKaryawan, setDetailKaryawan] = useState({})
   const [fileUrls, setFileUrls] = useState({})
+  let navigate = useNavigate()
 
   useEffect(() => {
     axios.get(`http://localhost:3001/users/${id}`).then((response) => {
-      setDetailKaryawan(response.data.karyawan)
+      const data = response.data.karyawan
+      setDetailKaryawan({
+        ...data,
+        tanggal_lahir: formatTanggal(data.tanggal_lahir),
+        tanggal_masuk: formatTanggal(data.tanggal_masuk),
+        tanggal_keluar: formatTanggal(data.tanggal_keluar),
+      })
+
     })
   }, [id])
 
@@ -56,7 +61,7 @@ function DetailKaryawan() {
     if (file.type.includes('pdf')) {
       return <iframe src={file.url} width="100%" height="400px" title="PDF File" />;
     } else if (file.type.includes('image')) {
-      return <img src={file.url} alt="Image File" style={{ maxWidth: '80%' }} />;
+      return <img src={file.url} alt={file.name} style={{ maxWidth: '80%' }} />;
     } else {
       return <a href={file.url} target="_blank" rel="noopener noreferrer">Download File</a>;
     }
@@ -87,6 +92,17 @@ function DetailKaryawan() {
       <Typography variant="h4" gutterBottom>
         Detail Karyawan
       </Typography>
+      <Grid item xs={12}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => navigate(`/karyawan/update/form/${detailKaryawan.id}`)}
+          sx={{ marginRight: 1 }}
+        >
+          Update
+        </Button>
+      </Grid>
+      <Divider sx={{ my: 1 }} />
       <Grid container spacing={2}>
         <Grid item xs={12} md={6}>
           <Paper elevation={3} sx={{ padding: 2 }}>
