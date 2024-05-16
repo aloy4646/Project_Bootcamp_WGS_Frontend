@@ -20,7 +20,12 @@ const FormGrid = styled(Grid)(() => ({
   flexDirection: 'column',
 }))
 
-function FormUser() {
+const formatTanggal = (tanggal) => {
+  //format tanggal menjadi yyyy-mm-dd
+  return tanggal ? new Date(tanggal).toISOString().split('T')[0] : ''
+}
+
+function FormUserData() {
   const { id } = useParams()
   const [formData, setFormData] = useState({})
   const [oldData, setOldData] = useState({})
@@ -29,7 +34,7 @@ function FormUser() {
   let navigate = useNavigate()
 
   useEffect(() => {
-    axios.get(`http://localhost:3001/users/${id}`).then((response) => {
+    axios.get(`http://localhost:3001/users/data/${id}`).then((response) => {
       const data = response.data.karyawan
       setFormData({
         ...data,
@@ -91,10 +96,7 @@ function FormUser() {
     })
 
     // validasi email
-    const emailFields = [
-        'email_kantor',
-        'email_pribadi',
-    ]
+    const emailFields = ['email_kantor', 'email_pribadi']
     emailFields.forEach((field) => {
       if (formData[field] && !validator.isEmail(formData[field])) {
         newErrors[field] = 'Invalid email'
@@ -102,12 +104,12 @@ function FormUser() {
     })
 
     // validasi nomor telepon
-    const numberFields = [
-        'nomor_telepon', 
-        'nomor_telepon_kontak_darurat'
-    ]
+    const numberFields = ['nomor_telepon', 'nomor_telepon_kontak_darurat']
     numberFields.forEach((field) => {
-      if (formData[field] && !validator.isMobilePhone(formData[field], "id-ID")) {
+      if (
+        formData[field] &&
+        !validator.isMobilePhone(formData[field], 'id-ID')
+      ) {
         newErrors[field] = 'Invalid phone number'
       }
     })
@@ -128,34 +130,33 @@ function FormUser() {
       formDataToSend.append('foto', selectedFile)
     }
 
-    for (let [key, value] of formDataToSend.entries()) {
-        console.log(`${key}: ${value}`);
-    }
+    // for (let [key, value] of formDataToSend.entries()) {
+    //   console.log(`${key}: ${value}`)
+    // }
 
-    axios.put(`http://localhost:3001/users/${id}`, formDataToSend, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    })
+    axios
+      .put(`http://localhost:3001/users/${id}`, formDataToSend, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
       .then((response) => {
         console.log(response.data)
-        alert("Permintaan update telah dicatat, silahkan tunggu konfirmasi dari admin")
+        alert(
+          'Permintaan update telah dicatat, silahkan tunggu konfirmasi dari admin'
+        )
         navigate(`/karyawan/${id}`)
       })
-  }
-
-  const formatTanggal = (tanggal) => {
-    //format tanggal menjadi yyyy-mm-dd
-    return tanggal ? new Date(tanggal).toISOString().split('T')[0] : ''
   }
 
   return (
     <>
       <Typography variant="h4" gutterBottom>
-        Form Update
+        Form Update Data
       </Typography>
+      <Divider sx={{ my: 1 }} />
       <Grid container spacing={3}>
-      <FormGrid item xs={12} md={6}>
+        <FormGrid item xs={12} md={6}>
           <TextField
             label="Email Kantor"
             type="email"
@@ -166,6 +167,10 @@ function FormUser() {
             InputLabelProps={{ shrink: true }}
             error={!!errors.email_kantor}
             helperText={errors.email_kantor}
+            InputProps={{
+              readOnly: true,
+              style: { backgroundColor: '#f0f0f0' }, // Warna latar belakang lebih gelap
+            }}
           />
         </FormGrid>
         <FormGrid item xs={12} md={6}>
@@ -385,4 +390,4 @@ function FormUser() {
   )
 }
 
-export default FormUser
+export default FormUserData

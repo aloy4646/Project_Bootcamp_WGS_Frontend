@@ -96,10 +96,18 @@ function DetailKaryawan() {
         <Button
           variant="contained"
           color="primary"
-          onClick={() => navigate(`/karyawan/update/form/${detailKaryawan.id}`)}
+          onClick={() => navigate(`/karyawan/update/form/data/${detailKaryawan.id}`)}
           sx={{ marginRight: 1 }}
         >
-          Update
+          Update Data
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => navigate(`/karyawan/update/form/dokumen/${detailKaryawan.id}`)}
+          sx={{ marginRight: 1 }}
+        >
+          Update Dokumen
         </Button>
       </Grid>
       <Divider sx={{ my: 1 }} />

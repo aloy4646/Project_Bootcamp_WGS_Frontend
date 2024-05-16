@@ -40,7 +40,6 @@ export default function ListUpdateRequest() {
 
   useEffect(() => {
     axios.get('http://localhost:3001/admin/update-request').then((response) => {
-      console.log(response.data.update_requests)
       setListUpdateRequest(response.data.update_requests)
     })
   }, [])
