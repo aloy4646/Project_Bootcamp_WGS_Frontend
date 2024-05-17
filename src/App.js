@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom'
 import {
   ThemeProvider,
   createTheme,
@@ -33,7 +33,59 @@ const theme = createTheme()
 
 const drawerWidth = 240
 
+function Navigation() {
+  const location = useLocation();
+
+  const linkItems = [
+    { to: '/', text: 'Home Page' },
+    { to: '/karyawan/list', text: 'List Karyawan' },
+    { to: '/karyawan/update-request', text: 'List Update Request' },
+    { to: '/sertifikat/form', text: 'Add a Certificate' },
+    { to: '/login', text: 'Login' },
+  ];
+
+  return (
+    <Drawer
+      variant="permanent"
+      sx={{
+        width: drawerWidth,
+        flexShrink: 0,
+        '& .MuiDrawer-paper': {
+          width: drawerWidth,
+          boxSizing: 'border-box',
+        },
+      }}
+    >
+      <Toolbar />
+      <Box sx={{ overflow: 'auto' }}>
+        <List>
+          {linkItems.map((item, index) => (
+            <ListItem
+              key={index}
+              button
+              component={Link}
+              to={item.to}
+              sx={{
+                backgroundColor:
+                  location.pathname === item.to
+                    ? 'rgba(0, 0, 0, 0.08)'
+                    : 'transparent',
+                '&:hover': {
+                  backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                },
+              }}
+            >
+              <ListItemText primary={item.text} />
+            </ListItem>
+          ))}
+        </List>
+      </Box>
+    </Drawer>
+  );
+}
+
 function App() {
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -52,23 +104,7 @@ function App() {
           >
             <Toolbar />
             <Box sx={{ overflow: 'auto' }}>
-              <List>
-                <ListItem button component={Link} to="/">
-                  <ListItemText primary="Home Page" />
-                </ListItem>
-                <ListItem button component={Link} to="/karyawan/list">
-                  <ListItemText primary="List Karyawan" />
-                </ListItem>
-                <ListItem button component={Link} to="/karyawan/update-request">
-                  <ListItemText primary="List Update Request" />
-                </ListItem>
-                <ListItem button component={Link} to="/sertifikat/form">
-                  <ListItemText primary="Add a Certificate" />
-                </ListItem>
-                <ListItem button component={Link} to="/login">
-                  <ListItemText primary="Login" />
-                </ListItem>
-              </List>
+            <Navigation />
             </Box>
           </Drawer>
           <Box
@@ -94,13 +130,31 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/karyawan/list" element={<ListKaryawan />} />
-              <Route path="/karyawan/update-request" element={<ListUpdateRequest />} />
-              <Route path="/karyawan/update-request/:update_requestId" element={<DetailUpdateRequest />} />
-              <Route path="/karyawan/update/form/data/:id" element={<FormUserData />} />
-              <Route path="/karyawan/update/form/dokumen/:id" element={<FormUserDokumen />} />
+              <Route
+                path="/karyawan/update-request"
+                element={<ListUpdateRequest />}
+              />
+              <Route
+                path="/karyawan/update-request/:update_requestId"
+                element={<DetailUpdateRequest />}
+              />
+              <Route
+                path="/karyawan/update/form/data/:id"
+                element={<FormUserData />}
+              />
+              <Route
+                path="/karyawan/update/form/dokumen/:id"
+                element={<FormUserDokumen />}
+              />
               <Route path="/karyawan/logs/:id" element={<ListLogs />} />
-              <Route path="/karyawan/histories/:id" element={<ListHistories />} />
-              <Route path="/karyawan/histories/:id/:index" element={<DetailHistory />} />
+              <Route
+                path="/karyawan/histories/:id"
+                element={<ListHistories />}
+              />
+              <Route
+                path="/karyawan/histories/:id/:index"
+                element={<DetailHistory />}
+              />
               <Route path="/sertifikat/form" element={<AddCertificate />} />
               <Route path="/karyawan/:id" element={<DetailKaryawan />} />
               <Route path="/login" element={<Login />} />

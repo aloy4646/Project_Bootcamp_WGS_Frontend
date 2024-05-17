@@ -87,6 +87,7 @@ function FormUserData() {
       'nama_pasangan',
       'nama_saudara',
       'tanggal_masuk',
+      'message',
     ]
 
     requiredFields.forEach((field) => {
@@ -359,7 +360,7 @@ function FormUserData() {
             InputLabelProps={{ shrink: true }}
           />
         </FormGrid>
-        <FormGrid item xs={12}>
+        <FormGrid item xs={12} md={6}>
           <Typography variant="body1" gutterBottom>
             Foto
           </Typography>
@@ -373,6 +374,18 @@ function FormUserData() {
           <Typography variant="caption" display="block" gutterBottom>
             Tambahkan file image jika ingin merubah foto
           </Typography>
+        </FormGrid>
+        <FormGrid item xs={12} md={6}>
+          <TextField
+            label="Alasan perubahan"
+            name="message"
+            value={formData.message || ''}
+            onChange={handleChange}
+            required
+            InputLabelProps={{ shrink: true }}
+            error={!!errors.message}
+            helperText={errors.message}
+          />
         </FormGrid>
         {/* <FormGrid item xs={12}>
           <FormControlLabel

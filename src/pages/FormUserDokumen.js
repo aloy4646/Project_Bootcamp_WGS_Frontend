@@ -5,7 +5,7 @@ import {
   Grid,
   //   FormLabel,
   //   OutlinedInput,
-  //   TextField,
+  TextField,
   Typography,
   Divider,
   Button,
@@ -34,6 +34,7 @@ function FormUserDokumen() {
   const [formData, setFormData] = useState({})
   const [oldData, setOldData] = useState({})
   const [fileUrls, setFileUrls] = useState({})
+  const [errors, setErrors] = useState({})
   let navigate = useNavigate()
 
   useEffect(() => {
@@ -85,7 +86,28 @@ function FormUserDokumen() {
     })
   }
 
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setFormData({
+      ...formData,
+      [name]: value,
+    })
+  }
+
   const handleSubmit = () => {
+    // Reset errors
+    setErrors({})
+    const newErrors = {}
+
+    if (!formData["message"]) {
+      newErrors["message"] = 'This field is required'
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors)
+      return
+    }
+
     const formDataToSend = new FormData()
     let kosong = true
 
@@ -251,6 +273,18 @@ function FormUserDokumen() {
           <Typography variant="caption" display="block" gutterBottom>
             Tambahkan file pdf jika ingin merubah CV Perusahaan
           </Typography>
+        </FormGrid>
+        <FormGrid item xs={12} md={6}>
+          <TextField
+            label="Alasan perubahan"
+            name="message"
+            value={formData.message || ''}
+            onChange={handleChange}
+            required
+            InputLabelProps={{ shrink: true }}
+            error={!!errors.message}
+            helperText={errors.message}
+          />
         </FormGrid>
       </Grid>
       <Divider sx={{ my: 2 }} />
