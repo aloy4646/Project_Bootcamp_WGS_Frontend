@@ -60,9 +60,9 @@ function ListSertifikat() {
           <Button
             variant="contained"
             color="primary"
-            // onClick={() =>
-            //   navigate(`/karyawan/update/form/data/${detailKaryawan.id}`)
-            // }
+            onClick={() =>
+              navigate(`/karyawan/sertifikat/${id}/form`)
+            }
             sx={{ marginRight: 1 }}
           >
             Tambah Sertifikat

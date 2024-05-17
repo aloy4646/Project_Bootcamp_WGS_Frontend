@@ -142,16 +142,26 @@ function DetailSertifikat() {
               })}
             </Paper>
           </Grid>
+          <Grid item xs={12}>
+            <Button
+            variant="contained"
+            color='primary'
+            onClick={() => navigate(`/karyawan/sertifikat/${id}/form?sertifikatId=${sertifikatId}`)}
+            sx={{ marginRight: 1 }}
+            >
+            Update Sertifikat
+            </Button>
+            <Button
+            variant="contained"
+            color='warning'
+            onClick={() => handleSubmit()}
+            sx={{ marginRight: 1 }}
+            >
+            Hapus Sertifikat
+            </Button>
+          </Grid>
         </Grid>
         <Divider sx={{ my: 2 }} />
-        <Button
-          variant="contained"
-          color='warning'
-          onClick={() => handleSubmit()}
-          sx={{ marginRight: 1 }}
-        >
-          Hapus Sertifikat
-        </Button>
       </Container>
     )
 }

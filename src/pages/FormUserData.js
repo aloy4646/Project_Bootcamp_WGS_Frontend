@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import {
-  //   Checkbox,
-  //   FormControlLabel,
   Grid,
-  //   FormLabel,
-  //   OutlinedInput,
   TextField,
   Typography,
   Divider,
@@ -25,12 +21,17 @@ const formatTanggal = (tanggal) => {
   return tanggal ? new Date(tanggal).toISOString().split('T')[0] : ''
 }
 
+function isFilePath(value) {
+  return typeof value === 'string' && value.includes('\\');
+}
+
 function FormUserData() {
   const { id } = useParams()
   const [formData, setFormData] = useState({})
   const [oldData, setOldData] = useState({})
   const [selectedFile, setSelectedFile] = useState(null)
   const [errors, setErrors] = useState({})
+  const [mediaUrl, setMediaUrl] = useState({})
   let navigate = useNavigate()
 
   useEffect(() => {
@@ -52,6 +53,30 @@ function FormUserData() {
     })
     // eslint-disable-next-line
   }, [])
+
+  useEffect(() => {
+    const fetchFile = async () => {
+      if (isFilePath(oldData.foto)) {
+        const response = await axios.get(
+          `http://localhost:3001/file?filePath=${encodeURIComponent(
+            oldData.foto
+          )}`,
+          {
+            responseType: 'blob',
+          }
+        )
+        const blob = new Blob([response.data], {
+          type: response.headers['content-type'],
+        })
+        const url = URL.createObjectURL(blob)
+        setMediaUrl({ url, type: response.headers['content-type'] })
+      }
+    }
+  
+    if (oldData && oldData.foto) {
+      fetchFile()
+    }
+  }, [oldData])
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -373,7 +398,28 @@ function FormUserData() {
           <Typography variant="body1" gutterBottom>
             Foto
           </Typography>
-
+          {mediaUrl && mediaUrl['url'] ? (
+            <>
+              { mediaUrl['type'].includes('image') ? (
+                <img
+                  src={mediaUrl['url']}
+                  alt={oldData.email_kantor}
+                  style={{ maxWidth: '80%' }}
+                />
+              ) : (
+                <a
+                  href={mediaUrl['url']}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Download File
+                </a>
+              )}
+            </>
+          ) : (
+            'No Data'
+          )}
+          <Divider sx={{ my: 1 }} />
           <input
             type="file"
             name="foto"
