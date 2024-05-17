@@ -27,6 +27,7 @@ import FormUserData from './pages/FormUserData'
 import FormUserDokumen from './pages/FormUserDokumen'
 import ListLogs from './pages/ListLogs'
 import ListHistories from './pages/ListHistories'
+import DetailHistory from './pages/DetailHistory'
 
 const theme = createTheme()
 
@@ -99,6 +100,7 @@ function App() {
               <Route path="/karyawan/update/form/dokumen/:id" element={<FormUserDokumen />} />
               <Route path="/karyawan/logs/:id" element={<ListLogs />} />
               <Route path="/karyawan/histories/:id" element={<ListHistories />} />
+              <Route path="/karyawan/histories/:id/:index" element={<DetailHistory />} />
               <Route path="/sertifikat/form" element={<AddCertificate />} />
               <Route path="/karyawan/:id" element={<DetailKaryawan />} />
               <Route path="/login" element={<Login />} />

@@ -141,7 +141,6 @@ function FormUserData() {
         },
       })
       .then((response) => {
-        console.log(response.data)
         alert(
           'Permintaan update telah dicatat, silahkan tunggu konfirmasi dari admin'
         )
