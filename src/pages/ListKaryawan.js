@@ -14,6 +14,7 @@ import {
     Divider,
   } from '@mui/material';
 import axios from 'axios'
+
 const headLabel = [
   { id: 'no', label: 'No' },
   { id: 'nama_lengkap', label: 'Nama Lengkap' },

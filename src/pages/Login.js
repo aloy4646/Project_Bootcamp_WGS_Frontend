@@ -23,7 +23,7 @@ const bgGradient = ({ color, imgUrl }) => ({
 });
 
 export default function LoginView() {
-  const theme = useTheme();
+  const theme = useTheme()
 
   const [showPassword, setShowPassword] = useState(false);
 

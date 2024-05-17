@@ -90,13 +90,15 @@ function DetailKaryawan() {
   return (
     <Container>
       <Typography variant="h4" gutterBottom>
-        Detail Karyawan
+        {detailKaryawan.nama_lengkap}
       </Typography>
       <Grid item xs={12}>
         <Button
           variant="contained"
           color="primary"
-          onClick={() => navigate(`/karyawan/update/form/data/${detailKaryawan.id}`)}
+          onClick={() =>
+            navigate(`/karyawan/update/form/data/${detailKaryawan.id}`)
+          }
           sx={{ marginRight: 1 }}
         >
           Update Data
@@ -104,7 +106,9 @@ function DetailKaryawan() {
         <Button
           variant="contained"
           color="primary"
-          onClick={() => navigate(`/karyawan/update/form/dokumen/${detailKaryawan.id}`)}
+          onClick={() =>
+            navigate(`/karyawan/update/form/dokumen/${detailKaryawan.id}`)
+          }
           sx={{ marginRight: 1 }}
         >
           Update Dokumen
@@ -130,6 +134,17 @@ function DetailKaryawan() {
         </Button>
       </Grid>
       <Divider sx={{ my: 1 }} />
+      <Grid item xs={12}>
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={() => navigate(`/karyawan/sertifikat/${detailKaryawan.id}`)}
+          sx={{ marginRight: 1 }}
+        >
+          Serifikat
+        </Button>
+      </Grid>
+      <Divider sx={{ my: 1 }} />
       <Grid container spacing={2}>
         <Grid item xs={12} md={6}>
           <Paper elevation={3} sx={{ padding: 2 }}>
@@ -151,7 +166,8 @@ function DetailKaryawan() {
               tempat_lahir: detailKaryawan.tempat_lahir,
               tanggal_lahir: detailKaryawan.tanggal_lahir,
               nama_kontak_darurat: detailKaryawan.nama_kontak_darurat,
-              nomor_telepon_kontak_darurat: detailKaryawan.nomor_telepon_kontak_darurat,
+              nomor_telepon_kontak_darurat:
+                detailKaryawan.nomor_telepon_kontak_darurat,
               nama_orang_tua: detailKaryawan.nama_orang_tua,
               nama_pasangan: detailKaryawan.nama_pasangan,
               nama_saudara: detailKaryawan.nama_saudara,

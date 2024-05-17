@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios'
-import { Container, Grid, Paper, Typography, Divider, Box } from '@mui/material'
+import { Container, Grid, Paper, Typography, Divider, Box, Button } from '@mui/material'
 
 function isFilePath(value) {
   return typeof value === 'string' && value.includes('\\')
@@ -11,6 +11,7 @@ function DetailHistory() {
   const { id, index } = useParams()
   const [detailHistory, setDetailHistory] = useState({})
   const [fileUrls, setFileUrls] = useState({})
+  const navigate = useNavigate()
 
   useEffect(() => {
     axios
@@ -101,6 +102,15 @@ function DetailHistory() {
 
   return (
     <Container>
+      <Button
+          variant="contained"
+          color='inherit'
+          onClick={() => navigate(-1)}
+          sx={{ marginRight: 1, marginTop: -1 }}
+        >
+          Kembali
+        </Button>
+        <Divider sx={{ my: 1 }} />
       <Typography variant="h4" gutterBottom>
         Detail history
       </Typography>
@@ -125,7 +135,6 @@ function DetailHistory() {
             </Typography>
             <Typography>{detailHistory.message}</Typography>
             <Divider sx={{ my: 2 }} />
-
           </Paper>
         </Grid>
 

@@ -147,6 +147,15 @@ function DetailUpdateRequest() {
 
   return (
     <Container>
+      <Button
+        variant="contained"
+        color="inherit"
+        onClick={() => navigate(-1)}
+        sx={{ marginRight: 1, marginTop: -1 }}
+      >
+        Kembali
+      </Button>
+      <Divider sx={{ my: 1 }} />
       <Typography variant="h4" gutterBottom>
         Detail Update Request
       </Typography>

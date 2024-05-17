@@ -10,9 +10,10 @@ import {
   TableRow,
   Typography,
   Divider,
+  Button,
 } from '@mui/material';
 import axios from 'axios'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 const headLabel = [
   { id: 'no', label: 'No' },
@@ -24,6 +25,7 @@ const headLabel = [
 function ListLogs() {
   const { id } = useParams()
   const [logsKaryawan, setLogsKaryawan] = useState([])
+  const navigate = useNavigate()
   
   useEffect(() => {
     axios.get(`http://localhost:3001/users/logs/${id}`).then((response) => {
@@ -34,6 +36,15 @@ function ListLogs() {
 
   return (
     <Container>
+      <Button
+        variant="contained"
+        color="inherit"
+        onClick={() => navigate(-1)}
+        sx={{ marginRight: 1, marginTop: -1 }}
+      >
+        Kembali
+      </Button>
+      <Divider sx={{ my: 1 }} />
       <Typography variant="h4" component="h1" gutterBottom>
         Logs Karyawan
       </Typography>

@@ -19,7 +19,6 @@ import {
 import Home from './pages/Home'
 import ListKaryawan from './pages/ListKaryawan'
 import ListUpdateRequest from './pages/ListUpdateRequest'
-import AddCertificate from './pages/AddCertificate'
 import DetailKaryawan from './pages/DetailKaryawan'
 import Login from './pages/Login'
 import DetailUpdateRequest from './pages/DetailUpdateRequest'
@@ -28,6 +27,9 @@ import FormUserDokumen from './pages/FormUserDokumen'
 import ListLogs from './pages/ListLogs'
 import ListHistories from './pages/ListHistories'
 import DetailHistory from './pages/DetailHistory'
+import ListSertifikat from './pages/ListSertifikat'
+import DetailSertifikat from './pages/DetailSertifikat'
+import FormSertifikat from './pages/FormSertifikat'
 
 const theme = createTheme()
 
@@ -40,7 +42,7 @@ function Navigation() {
     { to: '/', text: 'Home Page' },
     { to: '/karyawan/list', text: 'List Karyawan' },
     { to: '/karyawan/update-request', text: 'List Update Request' },
-    { to: '/sertifikat/form', text: 'Add a Certificate' },
+    // { to: '/sertifikat/form', text: 'Add a Certificate' },
     { to: '/login', text: 'Login' },
   ];
 
@@ -155,7 +157,15 @@ function App() {
                 path="/karyawan/histories/:id/:index"
                 element={<DetailHistory />}
               />
-              <Route path="/sertifikat/form" element={<AddCertificate />} />
+              <Route
+                path="/karyawan/sertifikat/:id"
+                element={<ListSertifikat />}
+              />
+               <Route
+                path="/karyawan/sertifikat/:id/:sertifikatId"
+                element={<DetailSertifikat />}
+              />
+              <Route path="/karyawan/sertifikat/:id/form" element={<FormSertifikat />} />
               <Route path="/karyawan/:id" element={<DetailKaryawan />} />
               <Route path="/login" element={<Login />} />
             </Routes>
