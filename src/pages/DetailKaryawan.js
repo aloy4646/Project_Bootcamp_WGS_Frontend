@@ -113,6 +113,16 @@ function DetailKaryawan() {
         >
           Update Dokumen
         </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() =>
+            navigate(`/karyawan/update/password/${detailKaryawan.id}`)
+          }
+          sx={{ marginRight: 1 }}
+        >
+          Update Password
+        </Button>
       </Grid>
       <Divider sx={{ my: 1 }} />
       <Grid item xs={12}>

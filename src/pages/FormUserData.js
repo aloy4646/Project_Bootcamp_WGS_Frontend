@@ -117,7 +117,7 @@ function FormUserData() {
 
     requiredFields.forEach((field) => {
       if (!formData[field]) {
-        newErrors[field] = 'This field is required'
+        newErrors[field] = 'Field ini wajib diisi'
       }
     })
 
@@ -125,7 +125,7 @@ function FormUserData() {
     const emailFields = ['email_kantor', 'email_pribadi']
     emailFields.forEach((field) => {
       if (formData[field] && !validator.isEmail(formData[field])) {
-        newErrors[field] = 'Invalid email'
+        newErrors[field] = 'Format email salah'
       }
     })
 
@@ -171,6 +171,12 @@ function FormUserData() {
           'Permintaan update telah dicatat, silahkan tunggu konfirmasi dari admin'
         )
         navigate(`/karyawan/${id}`)
+      })
+      .catch((error) => {
+        alert(
+          'Terjadi error, permintaan update gagal'
+        )
+        console.log(error)
       })
   }
 

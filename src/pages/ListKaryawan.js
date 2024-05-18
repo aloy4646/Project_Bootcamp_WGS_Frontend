@@ -12,6 +12,7 @@ import {
     Typography,
     Button,
     Divider,
+    Grid,
   } from '@mui/material';
 import axios from 'axios'
 
@@ -46,7 +47,17 @@ export default function ListKaryawan() {
       <Typography variant="h4" component="h1" gutterBottom>
         List Karyawan
       </Typography>
-      <Divider sx={{ my: 2 }} />
+      <Grid item xs={12}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => navigate(`/karyawan/add`)}
+          sx={{ marginRight: 1 }}
+        >
+          Add New Karyawan
+        </Button>
+      </Grid>
+      <Divider sx={{ my: 1 }} />
       <Card>
         <TableContainer>
           <Table sx={{ minWidth: 800 }}>

@@ -30,6 +30,8 @@ import DetailHistory from './pages/DetailHistory'
 import ListSertifikat from './pages/ListSertifikat'
 import DetailSertifikat from './pages/DetailSertifikat'
 import FormSertifikat from './pages/FormSertifikat'
+import AddKaryawan from './pages/AddKaryawan'
+import UpdatePassword from './pages/UpdatePassword'
 
 const theme = createTheme()
 
@@ -167,6 +169,8 @@ function App() {
               />
               <Route path="/karyawan/sertifikat/:id/form" element={<FormSertifikat />} />
               <Route path="/karyawan/:id" element={<DetailKaryawan />} />
+              <Route path="/karyawan/add" element={<AddKaryawan />} />
+              <Route path="/karyawan/update/password/:id" element={<UpdatePassword />} />
               <Route path="/login" element={<Login />} />
             </Routes>
           </Box>
