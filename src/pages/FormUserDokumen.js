@@ -13,6 +13,8 @@ import {
 import { styled } from '@mui/system'
 import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import { checkLogin } from '../features/AuthSlice'
+import { useDispatch, useSelector } from 'react-redux'
 
 const FormGrid = styled(Grid)(() => ({
   display: 'flex',
@@ -35,15 +37,28 @@ function FormUserDokumen() {
   const [oldData, setOldData] = useState({})
   const [fileUrls, setFileUrls] = useState({})
   const [errors, setErrors] = useState({})
-  let navigate = useNavigate()
+  const dispatch = useDispatch()
+  const { isError, user } =  useSelector((state) => state.auth)
+  const navigate = useNavigate()
 
   useEffect(() => {
-    axios.get(`http://localhost:3001/users/dokumen/${id}`).then((response) => {
-      const data = response.data.karyawan
-      setOldData(data)
-    })
-    // eslint-disable-next-line
-  }, [])
+    dispatch(checkLogin())
+  }, [dispatch])
+  
+  useEffect(() => {
+    if(isError){
+      navigate('/')
+    }
+  }, [isError, navigate])
+
+  useEffect(() => {
+    if(!isError && user){
+      axios.get(`http://localhost:3001/users/dokumen/${id}`).then((response) => {
+        const data = response.data.karyawan
+        setOldData(data)
+      })
+    }
+  }, [id, isError, user])
 
   useEffect(() => {
     const fetchFiles = async (data) => {

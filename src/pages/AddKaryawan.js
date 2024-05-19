@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   Box,
   Card,
@@ -14,14 +14,27 @@ import { useTheme } from '@mui/material/styles'
 import validator from 'validator'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { checkLogin } from '../features/AuthSlice'
+import { useDispatch, useSelector } from 'react-redux'
 
 function AddKaryawan() {
   const theme = useTheme()
   const [error, setError] = useState(null)
   const [email_kantor, setEmailKantor] = useState('')
   const [akunBaru, setAkunBaru] = useState({})
-
+  const dispatch = useDispatch()
+  const { isError } =  useSelector((state) => state.auth)
   const navigate = useNavigate()
+
+  useEffect(() => {
+    dispatch(checkLogin())
+  }, [dispatch])
+  
+  useEffect(() => {
+    if(isError){
+      navigate('/')
+    }
+  }, [isError, navigate])
 
   const handleSubmit = () => {
     setError(null)
@@ -52,8 +65,8 @@ function AddKaryawan() {
       })
       .catch((error) => {
         console.log(error)
-        if(error.response && error.response.data && error.response.data.error === 'email already exist') {
-          alert('Email sudah terdaftar pada akun lain')
+        if(error.response && error.response.data && error.response.data.error) {
+          alert(error.response.data.error)
         }else{
           alert('Terjadi error, proses pembuatan akun baru gagal')
         }

@@ -10,6 +10,8 @@ import { styled } from '@mui/system'
 import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import validator from 'validator'
+import { checkLogin } from '../features/AuthSlice'
+import { useDispatch, useSelector } from 'react-redux'
 
 const FormGrid = styled(Grid)(() => ({
   display: 'flex',
@@ -32,27 +34,42 @@ function FormUserData() {
   const [selectedFile, setSelectedFile] = useState(null)
   const [errors, setErrors] = useState({})
   const [mediaUrl, setMediaUrl] = useState({})
-  let navigate = useNavigate()
+  const dispatch = useDispatch()
+  const { isError, user } =  useSelector((state) => state.auth)
+  const navigate = useNavigate()
 
   useEffect(() => {
-    axios.get(`http://localhost:3001/users/data/${id}`).then((response) => {
-      const data = response.data.karyawan
-      setFormData({
-        ...data,
-        tanggal_lahir: formatTanggal(data.tanggal_lahir),
-        tanggal_masuk: formatTanggal(data.tanggal_masuk),
-        tanggal_keluar: formatTanggal(data.tanggal_keluar),
-      })
+    dispatch(checkLogin())
+  }, [dispatch])
+  
+  useEffect(() => {
+    if(isError){
+      navigate('/')
+    }
+  }, [isError, navigate])
 
-      setOldData({
-        ...data,
-        tanggal_lahir: formatTanggal(data.tanggal_lahir),
-        tanggal_masuk: formatTanggal(data.tanggal_masuk),
-        tanggal_keluar: formatTanggal(data.tanggal_keluar),
+  useEffect(() => {
+    if(!isError && user){
+      axios.get(`http://localhost:3001/users/data/${id}`).then((response) => {
+        const data = response.data.karyawan
+        setFormData({
+          ...data,
+          tanggal_lahir: formatTanggal(data.tanggal_lahir),
+          tanggal_masuk: formatTanggal(data.tanggal_masuk),
+          tanggal_keluar: formatTanggal(data.tanggal_keluar),
+        })
+  
+        setOldData({
+          ...data,
+          tanggal_lahir: formatTanggal(data.tanggal_lahir),
+          tanggal_masuk: formatTanggal(data.tanggal_masuk),
+          tanggal_keluar: formatTanggal(data.tanggal_keluar),
+        })
       })
-    })
-    // eslint-disable-next-line
-  }, [])
+      
+    }
+
+  }, [id, isError, user])
 
   useEffect(() => {
     const fetchFile = async () => {

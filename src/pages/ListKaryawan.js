@@ -15,6 +15,8 @@ import {
     Grid,
   } from '@mui/material';
 import axios from 'axios'
+import { checkLogin } from '../features/AuthSlice'
+import { useDispatch, useSelector } from 'react-redux'
 
 const headLabel = [
   { id: 'no', label: 'No' },
@@ -25,15 +27,28 @@ const headLabel = [
 ]
 
 export default function ListKaryawan() {
+  const [listKaryawan, setListKaryawan] = useState([])
+  const dispatch = useDispatch()
+  const { isError, user } =  useSelector((state) => state.auth)
   const navigate = useNavigate()
 
-  const [listKaryawan, setListKaryawan] = useState([])
+  useEffect(() => {
+    dispatch(checkLogin())
+  }, [dispatch])
+  
+  useEffect(() => {
+    if(isError){
+      navigate('/')
+    }
+  }, [isError, navigate])
 
   useEffect(() => {
-    axios.get('http://localhost:3001/users').then((response) => {
-      setListKaryawan(response.data.listKaryawan)
-    })
-  }, [])
+    if(!isError && user){
+      axios.get('http://localhost:3001/users').then((response) => {
+        setListKaryawan(response.data.listKaryawan)
+      })
+    }
+  }, [isError, user])
 
   const cekData = (data) => {
     if (!data){

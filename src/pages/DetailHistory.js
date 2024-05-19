@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios'
 import { Container, Grid, Paper, Typography, Divider, Box, Button } from '@mui/material'
+import { checkLogin } from '../features/AuthSlice'
+import { useDispatch, useSelector } from 'react-redux'
 
 function isFilePath(value) {
   return typeof value === 'string' && value.includes('\\')
@@ -12,15 +14,29 @@ function DetailHistory() {
   const [detailHistory, setDetailHistory] = useState({})
   const [fileUrls, setFileUrls] = useState({})
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const { isError, user } =  useSelector((state) => state.auth)
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:3001/users/histories/${id}`)
-      .then((response) => {
-        setDetailHistory(response.data.histories[index])
-      })
-      // eslint-disable-next-line
-  }, [])
+    dispatch(checkLogin())
+  }, [dispatch])
+  
+  useEffect(() => {
+    if(isError){
+      navigate('/')
+    }
+  }, [isError, navigate])
+
+  useEffect(() => {
+    if(!isError && user){
+      axios
+        .get(`http://localhost:3001/users/histories/${id}`)
+        .then((response) => {
+          setDetailHistory(response.data.histories[index])
+        })
+    }
+
+  }, [isError, user, id, index])
 
   //meminta data berupa file ke server
   useEffect(() => {

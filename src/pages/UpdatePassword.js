@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
 import Stack from '@mui/material/Stack'
@@ -11,6 +11,8 @@ import InputAdornment from '@mui/material/InputAdornment'
 import { useTheme } from '@mui/material/styles'
 import axios from 'axios'
 import { useParams, useNavigate } from 'react-router-dom'
+import { checkLogin } from '../features/AuthSlice'
+import { useDispatch, useSelector } from 'react-redux'
 
 function PasswordField({
   name,
@@ -46,7 +48,6 @@ function PasswordField({
 
 function UpdatePassword() {
   const { id } = useParams()
-  const navigate = useNavigate()
   const theme = useTheme()
   const [showPasswords, setShowPasswords] = useState([false, false, false])
   const [errors, setErrors] = useState({})
@@ -55,6 +56,21 @@ function UpdatePassword() {
     new_password: '',
     confirm_new_password: '',
   })
+
+  const dispatch = useDispatch()
+  const { isError } =  useSelector((state) => state.auth)
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    dispatch(checkLogin())
+  }, [dispatch])
+  
+  useEffect(() => {
+    if(isError){
+      navigate('/')
+    }
+  }, [isError, navigate])
+
 
   const handleToggleShowPassword = (index) => {
     setShowPasswords((prev) => {

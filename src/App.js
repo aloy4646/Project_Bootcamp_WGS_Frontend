@@ -1,5 +1,7 @@
 import React from 'react'
-import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom'
+import Logo from './logo_wgs.svg'
+
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import {
   ThemeProvider,
   createTheme,
@@ -9,13 +11,13 @@ import {
   Typography,
   // Button,
   Drawer,
-  List,
-  ListItem,
-  ListItemText,
   // ListItemIcon,
   // Divider,
   Box,
 } from '@mui/material'
+
+import Navigation from './components/Navigation'
+
 import Home from './pages/Home'
 import ListKaryawan from './pages/ListKaryawan'
 import ListUpdateRequest from './pages/ListUpdateRequest'
@@ -36,56 +38,6 @@ import UpdatePassword from './pages/UpdatePassword'
 const theme = createTheme()
 
 const drawerWidth = 240
-
-function Navigation() {
-  const location = useLocation();
-
-  const linkItems = [
-    { to: '/', text: 'Login' },
-    { to: '/home', text: 'Home Page' },
-    { to: '/karyawan/list', text: 'List Karyawan' },
-    { to: '/karyawan/update-request', text: 'List Update Request' },
-  ];
-
-  return (
-    <Drawer
-      variant="permanent"
-      sx={{
-        width: drawerWidth,
-        flexShrink: 0,
-        '& .MuiDrawer-paper': {
-          width: drawerWidth,
-          boxSizing: 'border-box',
-        },
-      }}
-    >
-      <Toolbar />
-      <Box sx={{ overflow: 'auto' }}>
-        <List>
-          {linkItems.map((item, index) => (
-            <ListItem
-              key={index}
-              button
-              component={Link}
-              to={item.to}
-              sx={{
-                backgroundColor:
-                  location.pathname === item.to
-                    ? 'rgba(0, 0, 0, 0.08)'
-                    : 'transparent',
-                '&:hover': {
-                  backgroundColor: 'rgba(0, 0, 0, 0.04)',
-                },
-              }}
-            >
-              <ListItemText primary={item.text} />
-            </ListItem>
-          ))}
-        </List>
-      </Box>
-    </Drawer>
-  );
-}
 
 function App() {
 
@@ -125,7 +77,7 @@ function App() {
                   component="div"
                   sx={{ flexGrow: 1 }}
                 >
-                  WGS
+                  <img src={Logo} width={112} height={28} alt='logo' /> 
                 </Typography>
               </Toolbar>
             </AppBar>

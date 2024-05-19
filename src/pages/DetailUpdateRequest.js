@@ -3,6 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { Container, Grid, Paper, Typography, Divider, Box, Button } from '@mui/material'
 import { format, toZonedTime } from 'date-fns-tz'
+import { checkLogin } from '../features/AuthSlice'
+import { useDispatch, useSelector } from 'react-redux'
 
 function formatDateToWIB(dateString) {
   
@@ -17,18 +19,32 @@ function isFilePath(value) {
 }
 
 function DetailUpdateRequest() {
-  let navigate = useNavigate()
   const { update_requestId } = useParams()
   const [detailUpdateRequest, setDetailUpdateRequest] = useState({})
   const [fileUrls, setFileUrls] = useState({})
+  const dispatch = useDispatch()
+  const { isError, user } =  useSelector((state) => state.auth)
+  const navigate = useNavigate()
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:3001/admin/update-request/${update_requestId}`)
-      .then((response) => {
-        setDetailUpdateRequest(response.data.update_request)
-      })
-  }, [update_requestId])
+    dispatch(checkLogin())
+  }, [dispatch])
+  
+  useEffect(() => {
+    if(isError){
+      navigate('/')
+    }
+  }, [isError, navigate])
+
+  useEffect(() => {
+    if(!isError && user){
+      axios
+        .get(`http://localhost:3001/admin/update-request/${update_requestId}`)
+        .then((response) => {
+          setDetailUpdateRequest(response.data.update_request)
+        })
+    }
+  }, [update_requestId, isError, user])
 
   //meminta data berupa file ke server
   useEffect(() => {

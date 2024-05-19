@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
 import Stack from '@mui/material/Stack'
@@ -10,30 +10,44 @@ import IconButton from '@mui/material/IconButton'
 import InputAdornment from '@mui/material/InputAdornment'
 import { useTheme } from '@mui/material/styles'
 import validator from 'validator'
-import axios from 'axios'
+// import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { LoginUser, reset } from '../features/AuthSlice'
 
 export default function LoginView() {
   const theme = useTheme()
   const [showPassword, setShowPassword] = useState(false)
   const [errors, setErrors] = useState({})
-  const [body, setBody] = useState({})
+  const [data, setData] = useState({})
+  const dispatch = useDispatch()
+  const { user, isError, isSuccess, isLoading, message } = useSelector(
+    (state) => state.auth
+  )
 
   const navigate = useNavigate()
 
-  const handleLogin = () => {
+  useEffect(() => {
+    if (user || isSuccess) {
+      navigate('/home')
+    }
+    dispatch(reset())
+  }, [user, isSuccess, dispatch, navigate])
+
+  const handleLogin = (e) => {
+    e.preventDefault()
     const newErrors = {}
 
     const requiredFields = ['email_kantor', 'password']
 
     requiredFields.forEach((field) => {
-      if (!body[field]) {
+      if (!data[field]) {
         newErrors[field] = 'Field ini wajib diisi'
       }
     })
 
     // validasi email
-    if (body["email_kantor"] && !validator.isEmail(body["email_kantor"])) {
+    if (data["email_kantor"] && !validator.isEmail(data["email_kantor"])) {
       newErrors["email_kantor"] = 'Format email salah'
     }
 
@@ -41,28 +55,15 @@ export default function LoginView() {
       setErrors(newErrors)
       return
     }
-    
-    axios
-      .post(`http://localhost:3001/users/login`, body)
-      .then((response) => {
-        alert('Login Berhasil')
-        navigate('/')
-      })
-      .catch((error) => {
-        console.log(error.response)
-        if(error.response && error.response.data && error.response.data.error === 'wrong email kantor or password') {
-          alert('Email Kantor atau Password Salah')
-        }else{
-          alert('Terjadi error, proses login gagal')
-        }
-      })
+
+    dispatch(LoginUser(data))
   }
 
   const handleChange = (e) => {
     e.preventDefault()
     const { name, value } = e.target
-    setBody({
-      ...body,
+    setData({
+      ...data,
       [name]: value,
     })
 
@@ -91,7 +92,7 @@ export default function LoginView() {
         }}
       >
         <Typography variant="h4" gutterBottom>
-          Sign In
+          Login
         </Typography>
         <Divider sx={{ my: 2 }} />
         <Stack spacing={3}>
@@ -123,7 +124,9 @@ export default function LoginView() {
             }}
           />
         </Stack>
-        <Divider sx={{ my: 2 }} />
+        <Divider sx={{ my: 1 }} />
+        {isError && <Typography color="error">{message}</Typography>}
+        <Divider sx={{ my: 1 }} />
         <Button
           fullWidth
           size="large"
@@ -132,7 +135,7 @@ export default function LoginView() {
           color="primary"
           onClick={handleLogin}
         >
-          Login
+          {isLoading ? 'Loading...' : 'Login'}
         </Button>
       </Card>
     </Box>

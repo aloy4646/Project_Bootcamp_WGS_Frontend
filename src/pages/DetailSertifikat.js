@@ -10,6 +10,8 @@ import {
   Box,
   Button,
 } from '@mui/material'
+import { checkLogin } from '../features/AuthSlice'
+import { useDispatch, useSelector } from 'react-redux'
 
 function isFilePath(value) {
   return typeof value === 'string' && value.includes('\\')
@@ -24,23 +26,37 @@ function DetailSertifikat() {
   const { id, sertifikatId } = useParams()
   const [detailSertifikat, setDetailSertifikat] = useState({})
   const [fileUrls, setFileUrls] = useState({})
-  let navigate = useNavigate()
+  const dispatch = useDispatch()
+  const { isError, user } =  useSelector((state) => state.auth)
+  const navigate = useNavigate()
 
   useEffect(() => {
-    axios
-      .get(
-        `http://localhost:3001/users/documents/sertifikat/${id}/${sertifikatId}`
-      )
-      .then((response) => {
-        const data = response.data.sertifikat
-        setDetailSertifikat({
-          ...data,
-          tanggal_terbit: formatTanggal(data.tanggal_terbit),
-          tanggal_expired: formatTanggal(data.tanggal_expired),
+    dispatch(checkLogin())
+  }, [dispatch])
+  
+  useEffect(() => {
+    if(isError){
+      navigate('/')
+    }
+  }, [isError, navigate])
+
+  useEffect(() => {
+    if(!isError && user){
+      axios
+        .get(
+          `http://localhost:3001/users/documents/sertifikat/${id}/${sertifikatId}`
+        )
+        .then((response) => {
+          const data = response.data.sertifikat
+          setDetailSertifikat({
+            ...data,
+            tanggal_terbit: formatTanggal(data.tanggal_terbit),
+            tanggal_expired: formatTanggal(data.tanggal_expired),
+          })
         })
-      })
-    // eslint-disable-next-line
-  }, [])
+    }
+
+  }, [isError, user, id, sertifikatId])
 
   useEffect(() => {
     const fetchFiles = async (data) => {

@@ -10,6 +10,8 @@ import {
 import { styled } from '@mui/system'
 import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import axios from 'axios'
+import { checkLogin } from '../features/AuthSlice'
+import { useDispatch, useSelector } from 'react-redux'
 
 const FormGrid = styled(Grid)(() => ({
   display: 'flex',
@@ -33,13 +35,24 @@ function FormSertifikat() {
   const [errors, setErrors] = useState({})
   const [mediaUrl, setMediaUrl] = useState({})
 
-  const navigate = useNavigate()
-
   const location = useLocation()
   const [sertifikatId, setSertifikatId] = useState(null)
 
+  const dispatch = useDispatch()
+  const { isError } =  useSelector((state) => state.auth)
+  const navigate = useNavigate()
+
   useEffect(() => {
-    console.log('masuk sini')
+    dispatch(checkLogin())
+  }, [dispatch])
+  
+  useEffect(() => {
+    if(isError){
+      navigate('/')
+    }
+  }, [isError, navigate])
+
+  useEffect(() => {
     const searchParams = new URLSearchParams(location.search)
     const sertifikatIdParam = searchParams.get('sertifikatId')
     setSertifikatId(sertifikatIdParam)

@@ -14,6 +14,8 @@ import {
 } from '@mui/material';
 import axios from 'axios'
 import { useNavigate, useParams } from 'react-router-dom'
+import { checkLogin } from '../features/AuthSlice'
+import { useDispatch, useSelector } from 'react-redux'
 
 const headLabel = [
   { id: 'no', label: 'No' },
@@ -25,14 +27,27 @@ const headLabel = [
 function ListLogs() {
   const { id } = useParams()
   const [logsKaryawan, setLogsKaryawan] = useState([])
+  const dispatch = useDispatch()
+  const { isError, user } =  useSelector((state) => state.auth)
   const navigate = useNavigate()
+
+  useEffect(() => {
+    dispatch(checkLogin())
+  }, [dispatch])
   
   useEffect(() => {
-    axios.get(`http://localhost:3001/users/logs/${id}`).then((response) => {
-      setLogsKaryawan(response.data.logs)
-    })
-    // eslint-disable-next-line
-  }, [])
+    if(isError){
+      navigate('/')
+    }
+  }, [isError, navigate])
+  
+  useEffect(() => {
+    if(!isError && user){
+      axios.get(`http://localhost:3001/users/logs/${id}`).then((response) => {
+        setLogsKaryawan(response.data.logs)
+      })
+    }
+  }, [isError, user, id])
 
   return (
     <Container>

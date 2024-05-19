@@ -1,28 +1,29 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
-    Container,
-    Card,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
-    Typography,
-    Button,
-    Divider,
-  } from '@mui/material';
+  Container,
+  Card,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+  Button,
+  Divider,
+} from '@mui/material'
 import axios from 'axios'
-import { format, toZonedTime } from 'date-fns-tz';
+import { format, toZonedTime } from 'date-fns-tz'
+import { checkLogin } from '../features/AuthSlice'
+import { useDispatch, useSelector } from 'react-redux'
 
 function formatDateToWIB(dateString) {
-  const date = new Date(dateString);
-  const timeZone = 'Asia/Jakarta';
-  const zonedDate = toZonedTime(date, timeZone);
-  return format(zonedDate, 'yyyy-MM-dd', { timeZone });
+  const date = new Date(dateString)
+  const timeZone = 'Asia/Jakarta'
+  const zonedDate = toZonedTime(date, timeZone)
+  return format(zonedDate, 'yyyy-MM-dd', { timeZone })
 }
-
 
 const headLabel = [
   { id: 'no', label: 'No' },
@@ -34,19 +35,37 @@ const headLabel = [
 ]
 
 export default function ListUpdateRequest() {
+  const [listUpdateRequest, setListUpdateRequest] = useState([])
+  const dispatch = useDispatch()
+  const { isError, user } =  useSelector((state) => state.auth)
   const navigate = useNavigate()
 
-  const [listUpdateRequest, setListUpdateRequest] = useState([])
+  useEffect(() => {
+    dispatch(checkLogin())
+  }, [dispatch])
+  
+  useEffect(() => {
+    if(isError){
+      navigate('/')
+    }
+  }, [isError, navigate])
+
 
   useEffect(() => {
-    axios.get('http://localhost:3001/admin/update-request').then((response) => {
-      setListUpdateRequest(response.data.update_requests)
-    })
-  }, [])
+    if(!isError && user){
+      axios.get('http://localhost:3001/admin/update-request').then((response) => {
+        setListUpdateRequest(response.data.update_requests)
+      })
+    }
+  }, [isError, user])
 
   const cekData = (data) => {
-    if (!data){
-      return <TableCell sx={{ fontStyle: 'italic', opacity: 0.8 }}>No Data</TableCell>
+    if (!data) {
+      return (
+        <TableCell sx={{ fontStyle: 'italic', opacity: 0.8 }}>
+          No Data
+        </TableCell>
+      )
     }
     return <TableCell>{data}</TableCell>
   }
@@ -83,7 +102,11 @@ export default function ListUpdateRequest() {
                     <Button
                       variant="contained"
                       color="primary"
-                      onClick={() => navigate(`/karyawan/update-request/${update_request.id}`)}
+                      onClick={() =>
+                        navigate(
+                          `/karyawan/update-request/${update_request.id}`
+                        )
+                      }
                     >
                       Detail
                     </Button>

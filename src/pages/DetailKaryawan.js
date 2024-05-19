@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { Container, Typography, Grid, Paper, Divider, Box, Button } from '@mui/material'
+import { checkLogin } from '../features/AuthSlice'
+import { useDispatch, useSelector } from 'react-redux'
 
 function isFilePath(value) {
   return typeof value === 'string' && value.includes('\\');
@@ -17,19 +19,34 @@ function DetailKaryawan() {
   const [detailKaryawan, setDetailKaryawan] = useState({})
   const [fileUrls, setFileUrls] = useState({})
   let navigate = useNavigate()
+  const dispatch = useDispatch()
+  const { isError, user } =  useSelector((state) => state.auth)
 
   useEffect(() => {
-    axios.get(`http://localhost:3001/users/${id}`).then((response) => {
-      const data = response.data.karyawan
-      setDetailKaryawan({
-        ...data,
-        tanggal_lahir: formatTanggal(data.tanggal_lahir),
-        tanggal_masuk: formatTanggal(data.tanggal_masuk),
-        tanggal_keluar: formatTanggal(data.tanggal_keluar),
-      })
+    dispatch(checkLogin())
+  }, [dispatch])
+  
+  useEffect(() => {
+    if(isError){
+      navigate('/')
+    }
+  }, [isError, user, navigate])
 
-    })
-  }, [id])
+
+  useEffect(() => {
+    if(!isError && user){
+      axios.get(`http://localhost:3001/users/${id}`).then((response) => {
+        const data = response.data.karyawan
+        setDetailKaryawan({
+          ...data,
+          tanggal_lahir: formatTanggal(data.tanggal_lahir),
+          tanggal_masuk: formatTanggal(data.tanggal_masuk),
+          tanggal_keluar: formatTanggal(data.tanggal_keluar),
+        })
+      })
+    }
+
+  }, [id, isError, user])
 
   useEffect(() => {
     const fetchFiles = async (data) => {
