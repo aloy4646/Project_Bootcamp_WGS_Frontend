@@ -95,6 +95,7 @@ function FormSertifikat() {
   }, [oldData])
 
   const handleChange = (e) => {
+    e.preventDefault()
     const { name, value } = e.target
     setFormData({
       ...formData,
@@ -264,12 +265,29 @@ function FormSertifikat() {
           {mediaUrl && mediaUrl['url'] ? (
             <>
               {mediaUrl['type'].includes('pdf') ? (
-                <iframe
-                  src={mediaUrl['url']}
-                  width="50%"
-                  height="60%"
-                  title="PDF File"
-                />
+                <>
+                  <iframe
+                    src={mediaUrl['url']}
+                    width="50%"
+                    height="60%"
+                    title="PDF File"
+                  />
+                  <br />
+                  <a
+                    href={mediaUrl['url']}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Button
+                      variant="contained"
+                      color="inherit"
+                      size="small"
+                      sx={{ fontSize: '0.70rem', marginTop: 1 }}
+                    >
+                      Buka PDF di tab baru
+                    </Button>
+                  </a>
+                </>
               ) : mediaUrl['type'].includes('image') ? (
                 <img
                   src={mediaUrl['url']}

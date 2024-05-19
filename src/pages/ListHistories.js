@@ -48,7 +48,7 @@ function ListHistories() {
       </Button>
       <Divider sx={{ my: 1 }} />
       <Typography variant="h4" component="h1" gutterBottom>
-        Logs Karyawan
+        Histories Karyawan
       </Typography>
       <Divider sx={{ my: 2 }} />
       <Card>

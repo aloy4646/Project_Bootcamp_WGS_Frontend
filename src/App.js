@@ -41,11 +41,10 @@ function Navigation() {
   const location = useLocation();
 
   const linkItems = [
-    { to: '/', text: 'Home Page' },
+    { to: '/', text: 'Login' },
+    { to: '/home', text: 'Home Page' },
     { to: '/karyawan/list', text: 'List Karyawan' },
     { to: '/karyawan/update-request', text: 'List Update Request' },
-    // { to: '/sertifikat/form', text: 'Add a Certificate' },
-    { to: '/login', text: 'Login' },
   ];
 
   return (
@@ -126,13 +125,14 @@ function App() {
                   component="div"
                   sx={{ flexGrow: 1 }}
                 >
-                  Company Name
+                  WGS
                 </Typography>
               </Toolbar>
             </AppBar>
             <Toolbar />
             <Routes>
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<Login />} />
+              <Route path="/home" element={<Home />} />
               <Route path="/karyawan/list" element={<ListKaryawan />} />
               <Route
                 path="/karyawan/update-request"
@@ -171,7 +171,6 @@ function App() {
               <Route path="/karyawan/:id" element={<DetailKaryawan />} />
               <Route path="/karyawan/add" element={<AddKaryawan />} />
               <Route path="/karyawan/update/password/:id" element={<UpdatePassword />} />
-              <Route path="/login" element={<Login />} />
             </Routes>
           </Box>
         </Box>

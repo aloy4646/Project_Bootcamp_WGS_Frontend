@@ -59,7 +59,17 @@ function DetailKaryawan() {
 
   const renderFile = (file) => {
     if (file.type.includes('pdf')) {
-      return <iframe src={file.url} width="100%" height="400px" title="PDF File" />;
+      return (
+        <>
+          <iframe src={file.url} width="50%" height="60%" title="PDF File" />
+          <br />
+          <a href={file.url} target="_blank" rel="noopener noreferrer">
+            <Button variant="contained" color="inherit" size='small' sx={{ fontSize: '0.70rem', marginTop: 1}}>
+              Buka PDF di tab baru
+            </Button>
+          </a>
+        </>
+      )
     } else if (file.type.includes('image')) {
       return <img src={file.url} alt={file.name} style={{ maxWidth: '80%' }} />;
     } else {

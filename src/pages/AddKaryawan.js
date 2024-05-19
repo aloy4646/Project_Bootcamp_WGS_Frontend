@@ -51,12 +51,17 @@ function AddKaryawan() {
         })
       })
       .catch((error) => {
-        alert('Terjadi error, permintaan update gagal')
         console.log(error)
+        if(error.response && error.response.data && error.response.data.error === 'email already exist') {
+          alert('Email sudah terdaftar pada akun lain')
+        }else{
+          alert('Terjadi error, proses pembuatan akun baru gagal')
+        }
       })
   }
 
   const handleChange = (e) => {
+    e.preventDefault()
     setEmailKantor(e.target.value)
     setError(null)
   }

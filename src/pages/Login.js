@@ -59,6 +59,7 @@ export default function LoginView() {
   }
 
   const handleChange = (e) => {
+    e.preventDefault()
     const { name, value } = e.target
     setBody({
       ...body,
