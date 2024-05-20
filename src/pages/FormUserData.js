@@ -225,10 +225,14 @@ function FormUserData() {
             InputLabelProps={{ shrink: true }}
             error={!!errors.email_kantor}
             helperText={errors.email_kantor}
-            InputProps={{
-              readOnly: true,
-              style: { backgroundColor: '#f0f0f0' }, // Warna latar belakang lebih gelap
-            }}
+            InputProps={
+              user && user.role === 'USER'
+                ? {
+                    readOnly: true,
+                    style: { backgroundColor: '#f0f0f0' },
+                  }
+                : {}
+            }
           />
         </FormGrid>
         <FormGrid item xs={12} md={6}>

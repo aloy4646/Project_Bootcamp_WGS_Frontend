@@ -1,23 +1,11 @@
-import React from 'react'
-import Logo from './logo_wgs.svg'
-
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import {
-  ThemeProvider,
-  createTheme,
-  CssBaseline,
-  AppBar,
-  Toolbar,
-  Typography,
-  // Button,
-  Drawer,
-  // ListItemIcon,
-  // Divider,
-  Box,
-} from '@mui/material'
+import React, { useEffect } from 'react'
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { ThemeProvider, createTheme, CssBaseline, Box } from '@mui/material'
+import { checkLogin, reset } from './features/AuthSlice'
 
 import Navigation from './components/Navigation'
-
+import TopNavbar from './components/TopNavbar'
 import Home from './pages/Home'
 import ListKaryawan from './pages/ListKaryawan'
 import ListUpdateRequest from './pages/ListUpdateRequest'
@@ -37,92 +25,51 @@ import UpdatePassword from './pages/UpdatePassword'
 
 const theme = createTheme()
 
-const drawerWidth = 240
-
 function App() {
+  const dispatch = useDispatch()
+  const { user, isError } = useSelector((state) => state.auth)
+
+  useEffect(() => {
+    dispatch(checkLogin())
+  }, [dispatch])
+
+  useEffect(() => {
+    if (isError) {
+      dispatch(reset())
+    }
+  }, [isError, dispatch])
 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Router>
-        <Box sx={{ display: 'flex' }}>
-          <Drawer
-            variant="permanent"
-            sx={{
-              width: drawerWidth,
-              flexShrink: 0,
-              '& .MuiDrawer-paper': {
-                width: drawerWidth,
-                boxSizing: 'border-box',
-              },
-            }}
-          >
-            <Toolbar />
-            <Box sx={{ overflow: 'auto' }}>
-            <Navigation />
-            </Box>
-          </Drawer>
+        <TopNavbar />
+        <Box sx={{ display: 'flex', mt: 8 }}>
+          
+          {user && <Navigation />}
           <Box
             component="main"
             sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3 }}
           >
-            <AppBar
-              position="fixed"
-              sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
-            >
-              <Toolbar>
-                <Typography
-                  variant="h6"
-                  noWrap
-                  component="div"
-                  sx={{ flexGrow: 1 }}
-                >
-                  <img src={Logo} width={112} height={28} alt='logo' /> 
-                </Typography>
-              </Toolbar>
-            </AppBar>
-            <Toolbar />
             <Routes>
-              <Route path="/" element={<Login />} />
-              <Route path="/home" element={<Home />} />
-              <Route path="/karyawan/list" element={<ListKaryawan />} />
-              <Route
-                path="/karyawan/update-request"
-                element={<ListUpdateRequest />}
-              />
-              <Route
-                path="/karyawan/update-request/:update_requestId"
-                element={<DetailUpdateRequest />}
-              />
-              <Route
-                path="/karyawan/update/form/data/:id"
-                element={<FormUserData />}
-              />
-              <Route
-                path="/karyawan/update/form/dokumen/:id"
-                element={<FormUserDokumen />}
-              />
-              <Route path="/karyawan/logs/:id" element={<ListLogs />} />
-              <Route
-                path="/karyawan/histories/:id"
-                element={<ListHistories />}
-              />
-              <Route
-                path="/karyawan/histories/:id/:index"
-                element={<DetailHistory />}
-              />
-              <Route
-                path="/karyawan/sertifikat/:id"
-                element={<ListSertifikat />}
-              />
-               <Route
-                path="/karyawan/sertifikat/:id/:sertifikatId"
-                element={<DetailSertifikat />}
-              />
-              <Route path="/karyawan/sertifikat/:id/form" element={<FormSertifikat />} />
-              <Route path="/karyawan/:id" element={<DetailKaryawan />} />
-              <Route path="/karyawan/add" element={<AddKaryawan />} />
-              <Route path="/karyawan/update/password/:id" element={<UpdatePassword />} />
+              <Route path="/" element={user ? <Navigate to="/home" /> : <Login />} />
+              <Route path="/home" element={user ? <Home /> : <Navigate to="/" />} />
+              <Route path="/karyawan/list" element={user && user.role !== "USER" ? <ListKaryawan /> : <Navigate to="/" />} />
+              <Route path="/karyawan/update-request" element={user && user.role === "ADMIN" ? <ListUpdateRequest /> : <Navigate to="/" />} />
+              <Route path="/karyawan/update-request/:update_requestId" element={user && user.role === "ADMIN" ? <DetailUpdateRequest /> : <Navigate to="/" />} />
+              <Route path="/karyawan/update/form/data/:id" element={user ? <FormUserData /> : <Navigate to="/" />} />
+              <Route path="/karyawan/update/form/dokumen/:id" element={user ? <FormUserDokumen /> : <Navigate to="/" />} />
+              <Route path="/karyawan/logs/:id" element={user ? <ListLogs /> : <Navigate to="/" />} />
+              <Route path="/karyawan/histories/:id" element={user ? <ListHistories /> : <Navigate to="/" />} />
+              <Route path="/karyawan/histories/:id/:index" element={user ? <DetailHistory /> : <Navigate to="/" />} />
+              <Route path="/karyawan/sertifikat/:id" element={user ? <ListSertifikat /> : <Navigate to="/" />} />
+              <Route path="/karyawan/sertifikat/:id/:sertifikatId" element={user ? <DetailSertifikat /> : <Navigate to="/" />} />
+              <Route path="/karyawan/sertifikat/:id/form" element={user ? <FormSertifikat /> : <Navigate to="/" />} />
+              <Route path="/karyawan/:id" element={user ? <DetailKaryawan /> : <Navigate to="/" />} />
+              <Route path="/karyawan/add" element={user && user.role === "ADMIN" ? <AddKaryawan /> : <Navigate to="/" />} />
+              <Route path="/karyawan/update/password/:id" element={user ? <UpdatePassword /> : <Navigate to="/" />} />
+              {/* Fallback Route */}
+              <Route path="*" element={<Navigate to="/" />} />
             </Routes>
           </Box>
         </Box>

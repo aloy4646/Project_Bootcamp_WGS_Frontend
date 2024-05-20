@@ -1,45 +1,54 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { List, ListItem, ListItemText, Toolbar, Box, Drawer, Button } from '@mui/material'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { logOut, reset } from '../features/AuthSlice'
 
 const drawerWidth = 240
 
 function Navigation() {
-    const location = useLocation()
-    const navigate = useNavigate()
-    const dispatch = useDispatch()
+  const location = useLocation()
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const { user } = useSelector((state) => state.auth)
   
-    const linkItems = [
-      { to: '/', text: 'Login' },
+  const linkItems = useMemo(() => {
+    var items = [
       { to: '/home', text: 'Home Page' },
-      { to: '/karyawan/list', text: 'List Karyawan' },
-      { to: '/karyawan/update-request', text: 'List Update Request' },
+      { to: '/karyawan/list', text: 'List Karyawan', roles: ['ADMIN', 'AUDITOR', 'SUPER ADMIN'] },
+      { to: '/karyawan/update-request', text: 'List Update Request', role: 'ADMIN' },
     ]
 
-    const handleLogout = () => {
-        dispatch(logOut())
-        dispatch(reset())
-        navigate('/')
+    if (user && user.role === 'USER') {
+      items.push({ to: `/karyawan/${user.id}`, text: 'Detail Karyawan', role: 'USER' })
     }
-  
-    return (
-      <Drawer
-        variant="permanent"
-        sx={{
+
+    return items
+  }, [user])
+
+  const handleLogout = () => {
+    dispatch(logOut())
+    dispatch(reset())
+    navigate('/')
+  }
+
+  return (
+    <Drawer
+      variant="permanent"
+      sx={{
+        width: drawerWidth,
+        flexShrink: 0,
+        '& .MuiDrawer-paper': {
           width: drawerWidth,
-          flexShrink: 0,
-          '& .MuiDrawer-paper': {
-            width: drawerWidth,
-            boxSizing: 'border-box',
-          },
-        }}
-      >
-        <Toolbar />
-        <Box sx={{ overflow: 'auto' }}>
-          <List>
-            {linkItems.map((item, index) => (
+          boxSizing: 'border-box',
+        },
+      }}
+    >
+      <Toolbar />
+      <Box sx={{ overflow: 'auto' }}>
+        <List>
+          {linkItems.map((item, index) => (
+            ((!item.role && !item.roles) || (user.role === item.role) || (item.roles && item.roles.includes(user.role))) && (
               <ListItem
                 key={index}
                 button
@@ -57,21 +66,22 @@ function Navigation() {
               >
                 <ListItemText primary={item.text} />
               </ListItem>
-            ))}
-          </List>
-          <Box sx={{ padding: 2 }}>
-            <Button
-              variant="contained"
-              color="secondary"
-              fullWidth
-              onClick={handleLogout}
-            >
-              Logout
-            </Button>
-          </Box>
+            )
+          ))}
+        </List>
+        <Box sx={{ padding: 2 }}>
+          <Button
+            variant="contained"
+            color="secondary"
+            fullWidth
+            onClick={handleLogout}
+          >
+            Logout
+          </Button>
         </Box>
-      </Drawer>
-    )
-  }
+      </Box>
+    </Drawer>
+  )
+}
 
 export default Navigation

@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react'
-import Box from '@mui/material/Box'
-import Card from '@mui/material/Card'
-import Stack from '@mui/material/Stack'
-import Button from '@mui/material/Button'
-import Divider from '@mui/material/Divider'
-import TextField from '@mui/material/TextField'
-import Typography from '@mui/material/Typography'
-import IconButton from '@mui/material/IconButton'
-import InputAdornment from '@mui/material/InputAdornment'
+import {
+  Container,
+  Box,
+  Card,
+  Stack,
+  Button,
+  Divider,
+  TextField,
+  Typography,
+  IconButton,
+  InputAdornment,
+} from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import axios from 'axios'
 import { useParams, useNavigate } from 'react-router-dom'
@@ -50,6 +53,7 @@ function UpdatePassword() {
   const { id } = useParams()
   const theme = useTheme()
   const [showPasswords, setShowPasswords] = useState([false, false, false])
+  const [newPasswordByAdmin, setNewPasswordByAdmin] = useState(null)
   const [errors, setErrors] = useState({})
   const [body, setBody] = useState({
     old_password: '',
@@ -58,7 +62,7 @@ function UpdatePassword() {
   })
 
   const dispatch = useDispatch()
-  const { isError } =  useSelector((state) => state.auth)
+  const { isError, user } =  useSelector((state) => state.auth)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -125,6 +129,19 @@ function UpdatePassword() {
       })
   }
 
+  const handleSubmitByAdmin = () => {
+    axios
+      .put(`http://localhost:3001/admin/password/${id}`)
+      .then((response) => {
+        alert('Update Password Berhasil')
+        setNewPasswordByAdmin(response.data.data.new_password)
+      })
+      .catch((error) => {
+        console.log(error.response)
+        alert('Terjadi error, proses update password gagal')
+      })
+  }
+
   const handleChange = (e) => {
     e.preventDefault()
     const { name, value } = e.target
@@ -140,72 +157,136 @@ function UpdatePassword() {
   }
 
   return (
-    <Box
-      sx={{
-        height: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: theme.palette.background.default,
-        mt: -10,
-      }}
-    >
-      <Card
+    <Container>
+      <Button
+        variant="contained"
+        color="inherit"
+        onClick={() => navigate(-1)}
+        sx={{ marginRight: 1, marginTop: -1 }}
+      >
+        Kembali
+      </Button>
+      <Divider sx={{ my: 1 }} />
+      <Box
         sx={{
-          p: 5,
-          width: '100%',
-          maxWidth: 420,
+          height: '100vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: theme.palette.background.default,
+          mt: -10,
         }}
       >
-        <Typography variant="h4" gutterBottom>
-          Update Password
-        </Typography>
-        <Divider sx={{ my: 2 }} />
-        <Stack spacing={3}>
-          <PasswordField
-            name="old_password"
-            label="Old Password"
-            value={body.old_password}
-            onChange={handleChange}
-            error={errors.old_password}
-            helperText={errors.old_password}
-            showPassword={showPasswords[0]}
-            onToggleShowPassword={() => handleToggleShowPassword(0)}
-          />
-          <PasswordField
-            name="new_password"
-            label="New Password"
-            value={body.new_password}
-            onChange={handleChange}
-            error={errors.new_password}
-            helperText={errors.new_password}
-            showPassword={showPasswords[1]}
-            onToggleShowPassword={() => handleToggleShowPassword(1)}
-          />
-          <PasswordField
-            name="confirm_new_password"
-            label="Confirm New Password"
-            value={body.confirm_new_password}
-            onChange={handleChange}
-            error={errors.confirm_new_password}
-            helperText={errors.confirm_new_password}
-            showPassword={showPasswords[2]}
-            onToggleShowPassword={() => handleToggleShowPassword(2)}
-          />
-        </Stack>
-        <Divider sx={{ my: 2 }} />
-        <Button
-          fullWidth
-          size="large"
-          type="submit"
-          variant="contained"
-          color="primary"
-          onClick={handleSubmit}
+        <Card
+          sx={{
+            p: 5,
+            width: '100%',
+            maxWidth: 420,
+          }}
         >
-          Submit
-        </Button>
-      </Card>
-    </Box>
+          <Typography variant="h4" gutterBottom>
+            Update Password
+          </Typography>
+          <Divider sx={{ my: 2 }} />
+          {user && user.role === 'ADMIN' ? (
+            <>
+              {newPasswordByAdmin ? (
+                <Container>
+                  <Box
+                    sx={{
+                      p: 3,
+                      backgroundColor: 'lightgreen',
+                      borderRadius: 2,
+                      textAlign: 'left',
+                    }}
+                  >
+                    <Typography variant="h6">
+                      Perubahan password berhasil.{' '}
+                    </Typography>
+                    <Divider sx={{ my: 0.2 }} />
+                    <Typography variant="h7">
+                      New Password:{' '}
+                      <span style={{ backgroundColor: '#ffffe0' }}>
+                        {newPasswordByAdmin}
+                      </span>
+                    </Typography>
+                  </Box>
+                  <Divider sx={{ my: 1 }} />
+                  <Button
+                    variant="contained"
+                    color="inherit"
+                    onClick={() => navigate(-1)}
+                    sx={{ marginRight: 1, marginTop: -1 }}
+                  >
+                    Kembali
+                  </Button>
+                </Container>
+              ) : (
+                <>
+                  <Divider sx={{ my: 2 }} />
+                  <Button
+                    fullWidth
+                    size="large"
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    onClick={handleSubmitByAdmin}
+                  >
+                    Generate Password Baru
+                  </Button>
+                </>
+              )}
+            </>
+          ) : (
+            <>
+              <Stack spacing={3}>
+                <PasswordField
+                  name="old_password"
+                  label="Old Password"
+                  value={body.old_password}
+                  onChange={handleChange}
+                  error={errors.old_password}
+                  helperText={errors.old_password}
+                  showPassword={showPasswords[0]}
+                  onToggleShowPassword={() => handleToggleShowPassword(0)}
+                />
+                <PasswordField
+                  name="new_password"
+                  label="New Password"
+                  value={body.new_password}
+                  onChange={handleChange}
+                  error={errors.new_password}
+                  helperText={errors.new_password}
+                  showPassword={showPasswords[1]}
+                  onToggleShowPassword={() => handleToggleShowPassword(1)}
+                />
+                <PasswordField
+                  name="confirm_new_password"
+                  label="Confirm New Password"
+                  value={body.confirm_new_password}
+                  onChange={handleChange}
+                  error={errors.confirm_new_password}
+                  helperText={errors.confirm_new_password}
+                  showPassword={showPasswords[2]}
+                  onToggleShowPassword={() => handleToggleShowPassword(2)}
+                />
+              </Stack>
+              <Divider sx={{ my: 2 }} />
+              <Button
+                fullWidth
+                size="large"
+                type="submit"
+                variant="contained"
+                color="primary"
+                onClick={handleSubmit}
+              >
+                Submit
+              </Button>
+            </>
+          )}
+        </Card>
+      </Box>
+    </Container>
   )
 }
 

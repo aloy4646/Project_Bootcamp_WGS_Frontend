@@ -140,16 +140,10 @@ function DetailSertifikat() {
     ))
   }
 
-  const handleSubmit = () => {
-    const body = {
-      userId: id,
-    }
-
+  const handleDelete = () => {
     axios
-      .put(
-        `http://localhost:3001/users/documents/sertifikat/${sertifikatId}/delete`,
-        body
-      )
+      .delete(
+        `http://localhost:3001/users/documents/sertifikat/${sertifikatId}`)
       .then((response) => {
         alert('Sertifikat berhasil terhapus')
         navigate(-1)
@@ -199,28 +193,30 @@ function DetailSertifikat() {
             })}
           </Paper>
         </Grid>
-        <Grid item xs={12}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() =>
-              navigate(
-                `/karyawan/sertifikat/${id}/form?sertifikatId=${sertifikatId}`
-              )
-            }
-            sx={{ marginRight: 1 }}
-          >
-            Update Sertifikat
-          </Button>
-          <Button
-            variant="contained"
-            color="warning"
-            onClick={() => handleSubmit()}
-            sx={{ marginRight: 1 }}
-          >
-            Hapus Sertifikat
-          </Button>
-        </Grid>
+        {user && user.role === 'USER' && (
+          <Grid item xs={12}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() =>
+                navigate(
+                  `/karyawan/sertifikat/${id}/form?sertifikatId=${sertifikatId}`
+                )
+              }
+              sx={{ marginRight: 1 }}
+            >
+              Update Sertifikat
+            </Button>
+            <Button
+              variant="contained"
+              color="warning"
+              onClick={() => handleDelete()}
+              sx={{ marginRight: 1 }}
+            >
+              Hapus Sertifikat
+            </Button>
+          </Grid>
+        )}
       </Grid>
       <Divider sx={{ my: 2 }} />
     </Container>

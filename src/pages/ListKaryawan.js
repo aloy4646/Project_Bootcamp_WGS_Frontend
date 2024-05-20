@@ -62,16 +62,18 @@ export default function ListKaryawan() {
       <Typography variant="h4" component="h1" gutterBottom>
         List Karyawan
       </Typography>
-      <Grid item xs={12}>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => navigate(`/karyawan/add`)}
-          sx={{ marginRight: 1 }}
-        >
-          Add New Karyawan
-        </Button>
-      </Grid>
+      {user && user.role !== 'AUDITOR' && (
+        <Grid item xs={12}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => navigate(`/karyawan/add`)}
+            sx={{ marginRight: 1 }}
+          >
+            Add New Karyawan
+          </Button>
+        </Grid>
+      )}
       <Divider sx={{ my: 1 }} />
       <Card>
         <TableContainer>

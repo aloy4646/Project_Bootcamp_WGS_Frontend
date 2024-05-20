@@ -15,8 +15,10 @@ export const LoginUser = createAsyncThunk("user/LoginUser", async (user, thunkAP
           .post(`http://localhost:3001/auth/login`, {
             email_kantor: user.email_kantor,
             password: user.password,
+          }).catch((error) => {
+              alert(error.response.data.error)
           })
-        return response.data
+        return response.data.data
     } catch (error) {
         if(error.response) {
             const message = error.response.data.error
@@ -28,7 +30,7 @@ export const LoginUser = createAsyncThunk("user/LoginUser", async (user, thunkAP
 export const checkLogin = createAsyncThunk("user/check", async (_, thunkAPI) => {
     try {
         const response = await axios.get(`http://localhost:3001/auth/check`)
-        return response.data
+        return response.data.data
     } catch (error) {
         if(error.response) {
             const message = error.response.data.error

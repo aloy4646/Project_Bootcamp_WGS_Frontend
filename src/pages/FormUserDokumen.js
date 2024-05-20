@@ -141,8 +141,6 @@ function FormUserDokumen() {
         return
     }
 
-    console.log("RESET");
-
     for (let [key, value] of formDataToSend.entries()) {
       console.log(`${key}: ${value}`)
     }

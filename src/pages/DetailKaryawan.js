@@ -116,60 +116,75 @@ function DetailKaryawan() {
 
   return (
     <Container>
+      <Button
+        variant="contained"
+        color="inherit"
+        onClick={() => navigate(-1)}
+        sx={{ marginRight: 1, marginTop: -1 }}
+      >
+        Kembali
+      </Button>
+      <Divider sx={{ my: 1 }} />
       <Typography variant="h4" gutterBottom>
         {detailKaryawan.nama_lengkap}
       </Typography>
-      <Grid item xs={12}>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() =>
-            navigate(`/karyawan/update/form/data/${detailKaryawan.id}`)
-          }
-          sx={{ marginRight: 1 }}
-        >
-          Update Data
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() =>
-            navigate(`/karyawan/update/form/dokumen/${detailKaryawan.id}`)
-          }
-          sx={{ marginRight: 1 }}
-        >
-          Update Dokumen
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() =>
-            navigate(`/karyawan/update/password/${detailKaryawan.id}`)
-          }
-          sx={{ marginRight: 1 }}
-        >
-          Update Password
-        </Button>
-      </Grid>
-      <Divider sx={{ my: 1 }} />
-      <Grid item xs={12}>
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={() => navigate(`/karyawan/logs/${detailKaryawan.id}`)}
-          sx={{ marginRight: 1 }}
-        >
-          Logs
-        </Button>
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={() => navigate(`/karyawan/histories/${detailKaryawan.id}`)}
-          sx={{ marginRight: 1 }}
-        >
-          Histories
-        </Button>
-      </Grid>
+      {user && user.role !== 'AUDITOR' && (
+        <>
+          <Grid item xs={12}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() =>
+                navigate(`/karyawan/update/form/data/${detailKaryawan.id}`)
+              }
+              sx={{ marginRight: 1 }}
+            >
+              Update Data
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() =>
+                navigate(`/karyawan/update/form/dokumen/${detailKaryawan.id}`)
+              }
+              sx={{ marginRight: 1 }}
+            >
+              Update Dokumen
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() =>
+                navigate(`/karyawan/update/password/${detailKaryawan.id}`)
+              }
+              sx={{ marginRight: 1 }}
+            >
+              Update Password
+            </Button>
+          </Grid>
+          <Divider sx={{ my: 1 }} />
+        </>
+      )}
+      {user && (user.role === 'ADMIN' || user.role === 'AUDITOR') && (
+        <Grid item xs={12}>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => navigate(`/karyawan/logs/${detailKaryawan.id}`)}
+            sx={{ marginRight: 1 }}
+          >
+            Logs
+          </Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => navigate(`/karyawan/histories/${detailKaryawan.id}`)}
+            sx={{ marginRight: 1 }}
+          >
+            Histories
+          </Button>
+        </Grid>
+      )}
       <Divider sx={{ my: 1 }} />
       <Grid item xs={12}>
         <Button

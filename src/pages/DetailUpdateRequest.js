@@ -105,7 +105,7 @@ function DetailUpdateRequest() {
         `http://localhost:3001/admin/update-request/accept/${update_requestId}`,
         {
           // body
-          idAdmin: 6,
+          idAdmin: user.id,
         }
       )
       .then(() => {
@@ -123,7 +123,7 @@ function DetailUpdateRequest() {
         `http://localhost:3001/admin/update-request/reject/${update_requestId}`,
         {
           // body
-          idAdmin: 6,
+          idAdmin: user.id,
           alasan: 'file tidak sesuai',
         }
       )

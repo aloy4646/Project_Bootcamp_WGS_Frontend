@@ -152,7 +152,6 @@ function FormSertifikat() {
       formDataToSend.append('media', selectedFile)
     }
 
-    console.log('RESET')
     for (let [key, value] of formDataToSend.entries()) {
       console.log(`${key}: ${value}`)
     }

@@ -29,9 +29,10 @@ export default function LoginView() {
 
   useEffect(() => {
     if (user || isSuccess) {
+      dispatch(reset())
       navigate('/home')
     }
-    dispatch(reset())
+    // dispatch(reset())
   }, [user, isSuccess, dispatch, navigate])
 
   const handleLogin = (e) => {

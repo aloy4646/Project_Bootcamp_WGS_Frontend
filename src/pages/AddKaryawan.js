@@ -23,7 +23,7 @@ function AddKaryawan() {
   const [email_kantor, setEmailKantor] = useState('')
   const [akunBaru, setAkunBaru] = useState({})
   const dispatch = useDispatch()
-  const { isError } =  useSelector((state) => state.auth)
+  const { isError, user } =  useSelector((state) => state.auth)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -52,7 +52,7 @@ function AddKaryawan() {
 
     const body = {
       email_kantor,
-      idAdmin: 6,
+      idAdmin: user.id,
     }
 
     axios
@@ -80,7 +80,17 @@ function AddKaryawan() {
   }
 
   return (
-    <Box
+    <Container>
+      <Button
+        variant="contained"
+        color="inherit"
+        onClick={() => navigate(-1)}
+        sx={{ marginRight: 1, marginTop: -1 }}
+      >
+        Kembali
+      </Button>
+      <Divider sx={{ my: 1 }} />
+      <Box
       sx={{
         height: '100vh',
         display: 'flex',
@@ -155,6 +165,7 @@ function AddKaryawan() {
         )}
       </Card>
     </Box>
+    </Container>
   )
 }
 

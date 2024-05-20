@@ -73,16 +73,18 @@ function ListSertifikat() {
       <Typography variant="h4" component="h1" gutterBottom>
         List Sertifikat
       </Typography>
-      <Grid item xs={12}>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => navigate(`/karyawan/sertifikat/${id}/form`)}
-          sx={{ marginRight: 1 }}
-        >
-          Tambah Sertifikat
-        </Button>
-      </Grid>
+      {user && user.role !== 'AUDITOR' && (
+        <Grid item xs={12}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => navigate(`/karyawan/sertifikat/${id}/form`)}
+            sx={{ marginRight: 1 }}
+          >
+            Tambah Sertifikat
+          </Button>
+        </Grid>
+      )}
       <Divider sx={{ my: 2 }} />
       <Card>
         <TableContainer>
