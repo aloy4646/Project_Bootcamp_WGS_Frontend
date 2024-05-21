@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
     Container,
@@ -17,14 +17,6 @@ import {
 import axios from 'axios'
 import { checkLogin } from '../features/AuthSlice'
 import { useDispatch, useSelector } from 'react-redux'
-
-const headLabel = [
-  { id: 'no', label: 'No' },
-  { id: 'nama_lengkap', label: 'Nama Lengkap' },
-  { id: 'nama_panggilan', label: 'Nama Panggilan' },
-  { id: 'email_kantor', label: 'Email Kantor' },
-  { id: 'action', label: 'Action' },
-]
 
 export default function ListKaryawan() {
   const [listKaryawan, setListKaryawan] = useState([])
@@ -49,6 +41,28 @@ export default function ListKaryawan() {
       })
     }
   }, [isError, user])
+
+  const headLabel = useMemo(() => {
+    const baseLabels = [
+      { id: 'no', label: 'No' },
+      { id: 'nama_lengkap', label: 'Nama Lengkap' },
+      { id: 'nama_panggilan', label: 'Nama Panggilan' },
+      { id: 'email_kantor', label: 'Email Kantor' },
+    ];
+  
+    if (user && user.role === 'SUPER ADMIN') {
+      return [
+        ...baseLabels,
+        { id: 'role', label: 'Role' },
+        { id: 'action', label: 'Action' }
+      ];
+    }
+  
+    return [
+      ...baseLabels,
+      { id: 'action', label: 'Action' }
+    ];
+  }, [user]);
 
   const cekData = (data) => {
     if (!data){
@@ -96,15 +110,30 @@ export default function ListKaryawan() {
                   {cekData(karyawan.nama_lengkap)}
                   {cekData(karyawan.nama_panggilan)}
                   <TableCell>{karyawan.email_kantor}</TableCell>
-                  <TableCell>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={() => navigate(`/karyawan/${karyawan.id}`)}
-                    >
-                      Detail
-                    </Button>
-                  </TableCell>
+                  {user.role === 'SUPER ADMIN' ? (
+                    <>
+                      <TableCell>{karyawan.role}</TableCell>
+                      <TableCell>
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          onClick={() => navigate(`/karyawan/role/${karyawan.id}`)}
+                        >
+                          Ubah Role
+                        </Button>
+                      </TableCell>
+                    </>
+                  ):(
+                    <TableCell>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={() => navigate(`/karyawan/${karyawan.id}`)}
+                      >
+                        Detail
+                      </Button>
+                    </TableCell>
+                  )}
                 </TableRow>
               ))}
             </TableBody>

@@ -22,6 +22,7 @@ import DetailSertifikat from './pages/DetailSertifikat'
 import FormSertifikat from './pages/FormSertifikat'
 import AddKaryawan from './pages/AddKaryawan'
 import UpdatePassword from './pages/UpdatePassword'
+import UbahRole from './pages/UbahRole'
 
 const theme = createTheme()
 
@@ -57,17 +58,18 @@ function App() {
               <Route path="/karyawan/list" element={user && user.role !== "USER" ? <ListKaryawan /> : <Navigate to="/" />} />
               <Route path="/karyawan/update-request" element={user && user.role === "ADMIN" ? <ListUpdateRequest /> : <Navigate to="/" />} />
               <Route path="/karyawan/update-request/:update_requestId" element={user && user.role === "ADMIN" ? <DetailUpdateRequest /> : <Navigate to="/" />} />
-              <Route path="/karyawan/update/form/data/:id" element={user ? <FormUserData /> : <Navigate to="/" />} />
-              <Route path="/karyawan/update/form/dokumen/:id" element={user ? <FormUserDokumen /> : <Navigate to="/" />} />
-              <Route path="/karyawan/logs/:id" element={user ? <ListLogs /> : <Navigate to="/" />} />
-              <Route path="/karyawan/histories/:id" element={user ? <ListHistories /> : <Navigate to="/" />} />
-              <Route path="/karyawan/histories/:id/:index" element={user ? <DetailHistory /> : <Navigate to="/" />} />
-              <Route path="/karyawan/sertifikat/:id" element={user ? <ListSertifikat /> : <Navigate to="/" />} />
-              <Route path="/karyawan/sertifikat/:id/:sertifikatId" element={user ? <DetailSertifikat /> : <Navigate to="/" />} />
-              <Route path="/karyawan/sertifikat/:id/form" element={user ? <FormSertifikat /> : <Navigate to="/" />} />
-              <Route path="/karyawan/:id" element={user ? <DetailKaryawan /> : <Navigate to="/" />} />
-              <Route path="/karyawan/add" element={user && user.role === "ADMIN" ? <AddKaryawan /> : <Navigate to="/" />} />
-              <Route path="/karyawan/update/password/:id" element={user ? <UpdatePassword /> : <Navigate to="/" />} />
+              <Route path="/karyawan/update/form/data/:id" element={user && (user.role === "USER" || user.role === 'ADMIN') ? <FormUserData /> : <Navigate to="/" />} />
+              <Route path="/karyawan/update/form/dokumen/:id" element={user && (user.role === "USER" || user.role === 'ADMIN') ? <FormUserDokumen /> : <Navigate to="/" />} />
+              <Route path="/karyawan/logs/:id" element={user && (user.role === "ADMIN" || user.role === 'AUDITOR') ? <ListLogs /> : <Navigate to="/" />} />
+              <Route path="/karyawan/histories/:id" element={user && (user.role === "ADMIN" || user.role === 'AUDITOR') ? <ListHistories /> : <Navigate to="/" />} />
+              <Route path="/karyawan/histories/:id/:index" element={user && (user.role === "ADMIN" || user.role === 'AUDITOR') ? <DetailHistory /> : <Navigate to="/" />} />
+              <Route path="/karyawan/sertifikat/:id" element={user && user.role !== 'SUPER ADMIN' ? <ListSertifikat /> : <Navigate to="/" />} />
+              <Route path="/karyawan/sertifikat/:id/:sertifikatId" element={user && user.role !== 'SUPER ADMIN' ? <DetailSertifikat /> : <Navigate to="/" />} />
+              <Route path="/karyawan/sertifikat/:id/form" element={user && user.role === 'USER' ? <FormSertifikat /> : <Navigate to="/" />} />
+              <Route path="/karyawan/:id" element={user && user.role !== 'SUPER ADMIN' ? <DetailKaryawan /> : <Navigate to="/" />} />
+              <Route path="/karyawan/add" element={user && (user.role === "ADMIN" || user.role === 'SUPER ADMIN') ? <AddKaryawan /> : <Navigate to="/" />} />
+              <Route path="/karyawan/update/password/:id" element={user && (user.role === "USER" || user.role === 'ADMIN') ? <UpdatePassword /> : <Navigate to="/" />} />
+              <Route path="/karyawan/role/:id" element={user && user.role === 'SUPER ADMIN' ? <UbahRole /> : <Navigate to="/" />} />
               {/* Fallback Route */}
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>
