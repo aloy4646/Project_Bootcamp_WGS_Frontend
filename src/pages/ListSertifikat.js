@@ -12,6 +12,7 @@ import {
   Divider,
   Button,
   Grid,
+  TablePagination,
 } from '@mui/material'
 import axios from 'axios'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -35,6 +36,8 @@ const headLabel = [
 function ListSertifikat() {
   const { id } = useParams()
   const [listSertifikat, setListSertifikat] = useState([])
+  const [page, setPage] = useState(0)
+  const [rowsPerPage, setRowsPerPage] = useState(5)
   const dispatch = useDispatch()
   const { isError, user } = useSelector((state) => state.auth)
   const navigate = useNavigate()
@@ -99,10 +102,10 @@ function ListSertifikat() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {listSertifikat.map((sertifikat, index) => (
+            {listSertifikat.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((sertifikat, index) => (
                 <TableRow key={index}>
                   <TableCell component="th" scope="row">
-                    {index + 1}
+                  {page * rowsPerPage + index + 1}
                   </TableCell>
                   <TableCell>{sertifikat.nama}</TableCell>
                   <TableCell>{sertifikat.organisasi_penerbit}</TableCell>
@@ -128,6 +131,24 @@ function ListSertifikat() {
             </TableBody>
           </Table>
         </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={listSertifikat.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={(event, newPage) => setPage(newPage)}
+          onRowsPerPageChange={(event) => {
+            setRowsPerPage(parseInt(event.target.value, 10));
+            setPage(0);
+          }}
+          sx={{ 
+            mt: 2, 
+            mb: 2, 
+            display: 'flex', 
+            justifyContent: 'center'
+          }}
+        />
       </Card>
     </Container>
   )
