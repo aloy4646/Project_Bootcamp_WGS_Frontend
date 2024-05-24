@@ -35,6 +35,7 @@ function FormUserData() {
   const [selectedFile, setSelectedFile] = useState(null)
   const [errors, setErrors] = useState({})
   const [mediaUrl, setMediaUrl] = useState({})
+  const [message, setMessage] = useState(null)
   const dispatch = useDispatch()
   const { isError, user } =  useSelector((state) => state.auth)
   const navigate = useNavigate()
@@ -53,6 +54,7 @@ function FormUserData() {
     if(!isError && user){
       axios.get(`${API_URL}/users/data/${id}`).then((response) => {
         const data = response.data.karyawan
+
         setFormData({
           ...data,
           tanggal_lahir: formatTanggal(data.tanggal_lahir),
@@ -109,6 +111,10 @@ function FormUserData() {
     setSelectedFile(e.target.files[0])
   }
 
+  const handleMessageChange = (event) => {
+    setMessage(event.target.value)
+  }
+
   const handleSubmit = () => {
     // Reset errors
     setErrors({})
@@ -131,14 +137,17 @@ function FormUserData() {
       'nama_pasangan',
       'nama_saudara',
       'tanggal_masuk',
-      'message',
     ]
 
     requiredFields.forEach((field) => {
-      if (!formData[field]) {
+      if (!formData[field] && !oldData[field]) {
         newErrors[field] = 'Field ini wajib diisi'
       }
     })
+
+    if(!message){
+      newErrors['message'] = 'Field ini wajib diisi'
+    }
 
     // validasi email
     const emailFields = ['email_kantor', 'email_pribadi']
@@ -174,10 +183,13 @@ function FormUserData() {
     if (selectedFile) {
       formDataToSend.append('foto', selectedFile)
     }
+    
+    if ([...formDataToSend.entries()].length === 0) {
+      alert('Tidak ada field yang diisi / diubah')
+      return
+    }
 
-    // for (let [key, value] of formDataToSend.entries()) {
-    //   console.log(`${key}: ${value}`)
-    // }
+    formDataToSend.append('message', message)
 
     axios
       .put(`${API_URL}/users/${id}`, formDataToSend, {
@@ -227,7 +239,7 @@ function FormUserData() {
             error={!!errors.email_kantor}
             helperText={errors.email_kantor}
             InputProps={
-              user && user.role === 'USER'
+              user && user.role !== 'ADMIN'
                 ? {
                     readOnly: true,
                     style: { backgroundColor: '#f0f0f0' },
@@ -463,8 +475,8 @@ function FormUserData() {
           <TextField
             label="Alasan perubahan"
             name="message"
-            value={formData.message || ''}
-            onChange={handleChange}
+            value={message || ''}
+            onChange={handleMessageChange}
             required
             InputLabelProps={{ shrink: true }}
             error={!!errors.message}

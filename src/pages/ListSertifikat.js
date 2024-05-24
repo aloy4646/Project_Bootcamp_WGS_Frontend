@@ -77,7 +77,8 @@ function ListSertifikat() {
       <Typography variant="h4" component="h1" gutterBottom>
         List Sertifikat
       </Typography>
-      {user && user.role !== 'AUDITOR' && (
+      {/* eslint-disable-next-line */}
+      {user && user.id == id && (
         <Grid item xs={12}>
           <Button
             variant="contained"

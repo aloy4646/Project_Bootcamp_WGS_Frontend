@@ -105,7 +105,7 @@ function ListHistories() {
                     <Button
                       variant="contained"
                       color="primary"
-                      onClick={() => navigate(`/karyawan/histories/${id}/${historiesKaryawan.length - index - 1}`)}
+                      onClick={() => navigate(`/karyawan/histories/${id}/${historiesKaryawan.length - index}`)}
                     >
                       Detail
                     </Button>

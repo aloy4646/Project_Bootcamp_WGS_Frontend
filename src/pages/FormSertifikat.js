@@ -69,13 +69,13 @@ function FormSertifikat() {
         )
         .then((response) => {
           const data = response.data.sertifikat
-          setOldData({
+          setFormData({
             ...data,
             tanggal_terbit: formatTanggal(data.tanggal_terbit),
             tanggal_expired: formatTanggal(data.tanggal_expired),
           })
 
-          setFormData({
+          setOldData({
             ...data,
             tanggal_terbit: formatTanggal(data.tanggal_terbit),
             tanggal_expired: formatTanggal(data.tanggal_expired),
@@ -130,7 +130,7 @@ function FormSertifikat() {
     const requiredFields = ['nama', 'organisasi_penerbit', 'tanggal_terbit']
 
     requiredFields.forEach((field) => {
-      if (!formData[field]) {
+      if (!formData[field] && !oldData[field]) {
         newErrors[field] = 'This field is required'
       }
     })
@@ -141,7 +141,6 @@ function FormSertifikat() {
     }
 
     const formDataToSend = new FormData()
-    formDataToSend.append('userId', id)
 
     for (const key in formData) {
       if (formData[key] !== oldData[key]) {
@@ -153,9 +152,13 @@ function FormSertifikat() {
       formDataToSend.append('media', selectedFile)
     }
 
-    for (let [key, value] of formDataToSend.entries()) {
-      console.log(`${key}: ${value}`)
+    if ([...formDataToSend.entries()].length === 0) {
+      alert('Tidak ada field yang diisi / diubah')
+      return
     }
+
+    formDataToSend.append('userId', id)
+
 
     let endpoint = ''
     let method = ''

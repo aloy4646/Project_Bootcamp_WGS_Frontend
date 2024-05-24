@@ -1,7 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import { Container, Grid, Paper, Typography, Divider, Box, Button } from '@mui/material'
+import { 
+  Container, 
+  Grid, 
+  Paper, 
+  Typography, 
+  Divider, 
+  Box, 
+  Button,
+  Dialog, 
+  DialogActions, 
+  DialogContent, 
+  DialogTitle, 
+  TextField,
+ } from '@mui/material'
 import { format, toZonedTime } from 'date-fns-tz'
 import { checkLogin } from '../features/AuthSlice'
 import { useDispatch, useSelector } from 'react-redux'
@@ -23,6 +36,8 @@ function DetailUpdateRequest() {
   const { update_requestId } = useParams()
   const [detailUpdateRequest, setDetailUpdateRequest] = useState({})
   const [fileUrls, setFileUrls] = useState({})
+  const [openDialog, setOpenDialog] = useState(false)
+  const [alasan, setAlasan] = useState('')
   const dispatch = useDispatch()
   const { isError, user } =  useSelector((state) => state.auth)
   const navigate = useNavigate()
@@ -125,7 +140,7 @@ function DetailUpdateRequest() {
         {
           // body
           idAdmin: user.id,
-          alasan: 'file tidak sesuai',
+          alasan: alasan,
         }
       )
       .then(() => {
@@ -135,6 +150,18 @@ function DetailUpdateRequest() {
       .catch((error) => {
         console.error('Error:', error)
       })
+  }
+
+  const handleDialogOpen = () => {
+    setOpenDialog(true)
+  }
+  
+  const handleDialogClose = () => {
+    setOpenDialog(false)
+  }
+  
+  const handleAlasanChange = (event) => {
+    setAlasan(event.target.value)
   }
 
   const renderDetails = (data, type) => {
@@ -185,7 +212,7 @@ function DetailUpdateRequest() {
         >
           Accept
         </Button>
-        <Button variant="contained" color="error" onClick={handleReject}>
+        <Button variant="contained" color="error" onClick={handleDialogOpen}>
           Reject
         </Button>
       </Grid>
@@ -244,6 +271,31 @@ function DetailUpdateRequest() {
           </Paper>
         </Grid>
       </Grid>
+
+      {/* dialog/kotak untuk input alasan reject */}
+      <Dialog open={openDialog} onClose={handleDialogClose}>
+        <DialogTitle>Reject Update Request</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Alasan"
+            type="text"
+            fullWidth
+            variant="outlined"
+            value={alasan}
+            onChange={handleAlasanChange}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDialogClose} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleReject} color="primary">
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Container>
   )
 }

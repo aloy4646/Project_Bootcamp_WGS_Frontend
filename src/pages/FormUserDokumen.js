@@ -38,6 +38,7 @@ function FormUserDokumen() {
   const [oldData, setOldData] = useState({})
   const [fileUrls, setFileUrls] = useState({})
   const [errors, setErrors] = useState({})
+  const [message, setMessage] = useState(null)
   const dispatch = useDispatch()
   const { isError, user } =  useSelector((state) => state.auth)
   const navigate = useNavigate()
@@ -102,13 +103,8 @@ function FormUserDokumen() {
     })
   }
 
-  const handleChange = (e) => {
-    e.preventDefault()
-    const { name, value } = e.target
-    setFormData({
-      ...formData,
-      [name]: value,
-    })
+  const handleMessageChange = (event) => {
+    setMessage(event.target.value)
   }
 
   const handleSubmit = () => {
@@ -116,7 +112,7 @@ function FormUserDokumen() {
     setErrors({})
     const newErrors = {}
 
-    if (!formData["message"]) {
+    if (!message) {
       newErrors["message"] = 'This field is required'
     }
 
@@ -138,13 +134,11 @@ function FormUserDokumen() {
 
     //pengecekan formData masih kosong atau tidak
     if(kosong){
-        alert('Silahkan lengkapi data terlebih dahulu')
+        alert('Tidak ada data yang diisi / diubah, silahkan lengkapi data terlebih dahulu')
         return
     }
 
-    for (let [key, value] of formDataToSend.entries()) {
-      console.log(`${key}: ${value}`)
-    }
+    formDataToSend.append('message', message)
 
     axios
       .put(`${API_URL}/users/documents/${id}`, formDataToSend, {
@@ -311,8 +305,8 @@ function FormUserDokumen() {
           <TextField
             label="Alasan perubahan"
             name="message"
-            value={formData.message || ''}
-            onChange={handleChange}
+            value={message || ''}
+            onChange={handleMessageChange}
             required
             InputLabelProps={{ shrink: true }}
             error={!!errors.message}

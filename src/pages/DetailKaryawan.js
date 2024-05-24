@@ -129,7 +129,8 @@ function DetailKaryawan() {
       <Typography variant="h4" gutterBottom>
         {detailKaryawan.nama_lengkap}
       </Typography>
-      {user && user.role !== 'AUDITOR' && (
+      {/* eslint-disable-next-line */}
+      {user && (user.id == id || user.role !== 'AUDITOR') && (
         <>
           <Grid item xs={12}>
             <Button
@@ -194,7 +195,7 @@ function DetailKaryawan() {
           onClick={() => navigate(`/karyawan/sertifikat/${detailKaryawan.id}`)}
           sx={{ marginRight: 1 }}
         >
-          Serifikat
+          Sertifikat
         </Button>
       </Grid>
       <Divider sx={{ my: 1 }} />
