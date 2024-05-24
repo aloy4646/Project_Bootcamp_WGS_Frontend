@@ -18,6 +18,7 @@ import axios from 'axios'
 import { useNavigate, useParams } from 'react-router-dom'
 import { checkLogin } from '../features/AuthSlice'
 import { useDispatch, useSelector } from 'react-redux'
+import API_URL from '../config/config'
 
 const formatTanggal = (tanggal) => {
   //format tanggal menjadi yyyy-mm-dd
@@ -55,7 +56,7 @@ function ListSertifikat() {
   useEffect(() => {
     if(!isError && user){
       axios
-        .get(`http://localhost:3001/users/documents/sertifikat/${id}`)
+        .get(`${API_URL}/users/documents/sertifikat/${id}`)
         .then((response) => {
           setListSertifikat(response.data.listSertifikat)
         })

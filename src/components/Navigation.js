@@ -19,8 +19,8 @@ function Navigation() {
       { to: '/karyawan/update-request', text: 'List Update Request', role: 'ADMIN' },
     ]
 
-    if (user && user.role === 'USER') {
-      items.push({ to: `/karyawan/${user.id}`, text: 'Detail Karyawan', role: 'USER' })
+    if (user && user.role !== 'SUPER ADMIN') {
+      items.push({ to: `/karyawan/${user.id}`, text: 'Detail Karyawan', roles: ['USER', 'ADMIN', 'AUDITOR'] })
     }
 
     return items

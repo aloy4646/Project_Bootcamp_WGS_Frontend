@@ -12,6 +12,7 @@ import {
 } from '@mui/material'
 import { checkLogin } from '../features/AuthSlice'
 import { useDispatch, useSelector } from 'react-redux'
+import API_URL from '../config/config'
 
 function isFilePath(value) {
   return typeof value === 'string' && value.includes('\\')
@@ -44,7 +45,7 @@ function DetailSertifikat() {
     if(!isError && user){
       axios
         .get(
-          `http://localhost:3001/users/documents/sertifikat/${id}/${sertifikatId}`
+          `${API_URL}/users/documents/sertifikat/${id}/${sertifikatId}`
         )
         .then((response) => {
           const data = response.data.sertifikat
@@ -64,7 +65,7 @@ function DetailSertifikat() {
       for (const key in data) {
         if (isFilePath(data[key])) {
           const response = await axios.get(
-            `http://localhost:3001/file?filePath=${encodeURIComponent(
+            `${API_URL}/file?filePath=${encodeURIComponent(
               data[key]
             )}`,
             {
@@ -143,7 +144,7 @@ function DetailSertifikat() {
   const handleDelete = () => {
     axios
       .delete(
-        `http://localhost:3001/users/documents/sertifikat/${sertifikatId}`)
+        `${API_URL}/users/documents/sertifikat/${sertifikatId}`)
       .then((response) => {
         alert('Sertifikat berhasil terhapus')
         navigate(-1)

@@ -4,6 +4,7 @@ import axios from 'axios'
 import { Container, Typography, Grid, Paper, Divider, Box, Button } from '@mui/material'
 import { checkLogin } from '../features/AuthSlice'
 import { useDispatch, useSelector } from 'react-redux'
+import API_URL from '../config/config'
 
 function isFilePath(value) {
   return typeof value === 'string' && value.includes('\\');
@@ -35,7 +36,7 @@ function DetailKaryawan() {
 
   useEffect(() => {
     if(!isError && user){
-      axios.get(`http://localhost:3001/users/${id}`).then((response) => {
+      axios.get(`${API_URL}/users/${id}`).then((response) => {
         const data = response.data.karyawan
         setDetailKaryawan({
           ...data,
@@ -53,7 +54,7 @@ function DetailKaryawan() {
       const urls = {};
       for (const key in data) {
         if (isFilePath(data[key])) {
-          const response = await axios.get(`http://localhost:3001/file?filePath=${encodeURIComponent(data[key])}`, {
+          const response = await axios.get(`${API_URL}/file?filePath=${encodeURIComponent(data[key])}`, {
             responseType: 'blob',
           });
           const blob = new Blob([response.data], { type: response.headers['content-type'] });

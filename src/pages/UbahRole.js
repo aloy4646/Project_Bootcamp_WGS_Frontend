@@ -16,6 +16,7 @@ import {
 } from '@mui/material'
 import axios from 'axios'
 import { useNavigate, useParams } from 'react-router-dom'
+import API_URL from '../config/config'
 
 function UbahRole() {
   const { id } = useParams()
@@ -49,7 +50,7 @@ function UbahRole() {
       }
 
       axios
-        .put(`http://localhost:3001/superadmin/role/${id}`, body)
+        .put(`${API_URL}/superadmin/role/${id}`, body)
         .then(() => {
           setConfirmed(true)
         })
@@ -58,7 +59,7 @@ function UbahRole() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3001/superadmin/role/${id}`)
+      .get(`${API_URL}/superadmin/role/${id}`)
       .then((response) => {
         setOldRole(response.data.data.role)
         setNewRole(response.data.data.role)

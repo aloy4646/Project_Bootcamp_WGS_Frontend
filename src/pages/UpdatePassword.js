@@ -16,6 +16,7 @@ import axios from 'axios'
 import { useParams, useNavigate } from 'react-router-dom'
 import { checkLogin } from '../features/AuthSlice'
 import { useDispatch, useSelector } from 'react-redux'
+import API_URL from '../config/config'
 
 function PasswordField({
   name,
@@ -114,15 +115,15 @@ function UpdatePassword() {
     }
 
     axios
-      .put(`http://localhost:3001/users/password/${id}`, bodyToSend)
+      .put(`${API_URL}/users/password/${id}`, bodyToSend)
       .then((response) => {
         alert('Update Password Berhasil')
         navigate('/')
       })
       .catch((error) => {
         console.log(error.response)
-        if(error.response && error.response.data && error.response.data.error === 'wrong old password') {
-          alert('Old Password Salah')
+        if(error.response && error.response.data && error.response.data.error) {
+          alert(error.response.data.error)
         }else{
           alert('Terjadi error, proses update password gagal')
         }
@@ -131,9 +132,8 @@ function UpdatePassword() {
 
   const handleSubmitByAdmin = () => {
     axios
-      .put(`http://localhost:3001/admin/password/${id}`)
+      .put(`${API_URL}/admin/password/${id}`)
       .then((response) => {
-        alert('Update Password Berhasil')
         setNewPasswordByAdmin(response.data.data.new_password)
       })
       .catch((error) => {
@@ -188,7 +188,8 @@ function UpdatePassword() {
             Update Password
           </Typography>
           <Divider sx={{ my: 2 }} />
-          {user && user.role === 'ADMIN' ? (
+          {/* eslint-disable-next-line */}
+          {user && user.id != id && user.role === 'ADMIN' ? (
             <>
               {newPasswordByAdmin ? (
                 <Container>

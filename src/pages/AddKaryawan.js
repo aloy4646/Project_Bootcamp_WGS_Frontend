@@ -16,6 +16,7 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { checkLogin } from '../features/AuthSlice'
 import { useDispatch, useSelector } from 'react-redux'
+import API_URL from '../config/config'
 
 function AddKaryawan() {
   const theme = useTheme()
@@ -56,7 +57,7 @@ function AddKaryawan() {
     }
 
     axios
-      .post(`http://localhost:3001/users`, body)
+      .post(`${API_URL}/users`, body)
       .then((response) => {
         setAkunBaru({
             email_kantor : response.data.data.email_kantor,

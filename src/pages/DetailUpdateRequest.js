@@ -5,6 +5,7 @@ import { Container, Grid, Paper, Typography, Divider, Box, Button } from '@mui/m
 import { format, toZonedTime } from 'date-fns-tz'
 import { checkLogin } from '../features/AuthSlice'
 import { useDispatch, useSelector } from 'react-redux'
+import API_URL from '../config/config'
 
 function formatDateToWIB(dateString) {
   
@@ -39,7 +40,7 @@ function DetailUpdateRequest() {
   useEffect(() => {
     if(!isError && user){
       axios
-        .get(`http://localhost:3001/admin/update-request/${update_requestId}`)
+        .get(`${API_URL}/admin/update-request/${update_requestId}`)
         .then((response) => {
           setDetailUpdateRequest(response.data.update_request)
         })
@@ -55,7 +56,7 @@ function DetailUpdateRequest() {
         if (isFilePath(data[key])) {
           //jika ada maka data file akan diminta ke server
           const response = await axios.get(
-            `http://localhost:3001/file?filePath=${encodeURIComponent(
+            `${API_URL}/file?filePath=${encodeURIComponent(
               data[key]
             )}`,
             {
@@ -102,7 +103,7 @@ function DetailUpdateRequest() {
   const handleAccept = () => {
     axios
       .put(
-        `http://localhost:3001/admin/update-request/accept/${update_requestId}`,
+        `${API_URL}/admin/update-request/accept/${update_requestId}`,
         {
           // body
           idAdmin: user.id,
@@ -120,7 +121,7 @@ function DetailUpdateRequest() {
   const handleReject = () => {
     axios
       .put(
-        `http://localhost:3001/admin/update-request/reject/${update_requestId}`,
+        `${API_URL}/admin/update-request/reject/${update_requestId}`,
         {
           // body
           idAdmin: user.id,

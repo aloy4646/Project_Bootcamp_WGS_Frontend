@@ -4,6 +4,14 @@ import axios from 'axios'
 import { Container, Grid, Paper, Typography, Divider, Box, Button } from '@mui/material'
 import { checkLogin } from '../features/AuthSlice'
 import { useDispatch, useSelector } from 'react-redux'
+import { format, toZonedTime } from 'date-fns-tz'
+import API_URL from '../config/config'
+
+const convertToWIB = (dateString) => {
+  const timeZone = 'Asia/Jakarta'
+  const zonedDate = toZonedTime(dateString, timeZone)
+  return format(zonedDate, 'yyyy-MM-dd HH:mm:ss', { timeZone })
+}
 
 function isFilePath(value) {
   return typeof value === 'string' && value.includes('\\')
@@ -30,7 +38,7 @@ function DetailHistory() {
   useEffect(() => {
     if(!isError && user){
       axios
-        .get(`http://localhost:3001/users/histories/${id}`)
+        .get(`${API_URL}/users/histories/${id}`)
         .then((response) => {
           setDetailHistory(response.data.histories[index])
         })
@@ -47,7 +55,7 @@ function DetailHistory() {
         if (isFilePath(data[key])) {
           //jika ada maka data file akan diminta ke server
           const response = await axios.get(
-            `http://localhost:3001/file?filePath=${encodeURIComponent(
+            `${API_URL}/file?filePath=${encodeURIComponent(
               data[key]
             )}`,
             {
@@ -150,7 +158,7 @@ function DetailHistory() {
             <Typography variant="subtitle1" gutterBottom>
               Date:
             </Typography>
-            <Typography>{detailHistory.date}</Typography>
+            <Typography>{convertToWIB(detailHistory.date)}</Typography>
             <Divider sx={{ my: 2 }} />
 
             <Typography variant="subtitle1" gutterBottom>

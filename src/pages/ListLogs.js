@@ -18,6 +18,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { checkLogin } from '../features/AuthSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { format, toZonedTime } from 'date-fns-tz'
+import API_URL from '../config/config';
 
 const convertToWIB = (dateString) => {
   const timeZone = 'Asia/Jakarta'
@@ -53,7 +54,7 @@ function ListLogs() {
   
   useEffect(() => {
     if (!isError && user) {
-      axios.get(`http://localhost:3001/users/logs/${id}`).then((response) => {
+      axios.get(`${API_URL}/users/logs/${id}`).then((response) => {
         //mengurutkan logs dimulai dari yang terbaru
         const sortedLogs = response.data.logs.reverse()
         setLogsKaryawan(sortedLogs)

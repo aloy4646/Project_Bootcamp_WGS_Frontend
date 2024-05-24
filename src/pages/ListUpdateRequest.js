@@ -18,6 +18,7 @@ import axios from 'axios'
 import { format, toZonedTime } from 'date-fns-tz'
 import { checkLogin } from '../features/AuthSlice'
 import { useDispatch, useSelector } from 'react-redux'
+import API_URL from '../config/config'
 
 function formatDateToWIB(dateString) {
   const date = new Date(dateString)
@@ -56,7 +57,7 @@ export default function ListUpdateRequest() {
 
   useEffect(() => {
     if(!isError && user){
-      axios.get('http://localhost:3001/admin/update-request').then((response) => {
+      axios.get(`${API_URL}/admin/update-request`).then((response) => {
         setListUpdateRequest(response.data.update_requests)
       })
     }

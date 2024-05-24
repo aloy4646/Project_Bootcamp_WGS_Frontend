@@ -15,6 +15,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { checkLogin } from '../features/AuthSlice'
 import { useDispatch, useSelector } from 'react-redux'
+import API_URL from '../config/config'
 
 const FormGrid = styled(Grid)(() => ({
   display: 'flex',
@@ -53,7 +54,7 @@ function FormUserDokumen() {
 
   useEffect(() => {
     if(!isError && user){
-      axios.get(`http://localhost:3001/users/dokumen/${id}`).then((response) => {
+      axios.get(`${API_URL}/users/dokumen/${id}`).then((response) => {
         const data = response.data.karyawan
         setOldData(data)
       })
@@ -66,7 +67,7 @@ function FormUserDokumen() {
       for (const key in data) {
         if (isFilePath(data[key])) {
           const response = await axios.get(
-            `http://localhost:3001/file?filePath=${encodeURIComponent(
+            `${API_URL}/file?filePath=${encodeURIComponent(
               data[key]
             )}`,
             {
@@ -146,7 +147,7 @@ function FormUserDokumen() {
     }
 
     axios
-      .put(`http://localhost:3001/users/documents/${id}`, formDataToSend, {
+      .put(`${API_URL}/users/documents/${id}`, formDataToSend, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

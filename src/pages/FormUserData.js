@@ -12,6 +12,7 @@ import axios from 'axios'
 import validator from 'validator'
 import { checkLogin } from '../features/AuthSlice'
 import { useDispatch, useSelector } from 'react-redux'
+import API_URL from '../config/config'
 
 const FormGrid = styled(Grid)(() => ({
   display: 'flex',
@@ -50,7 +51,7 @@ function FormUserData() {
 
   useEffect(() => {
     if(!isError && user){
-      axios.get(`http://localhost:3001/users/data/${id}`).then((response) => {
+      axios.get(`${API_URL}/users/data/${id}`).then((response) => {
         const data = response.data.karyawan
         setFormData({
           ...data,
@@ -75,7 +76,7 @@ function FormUserData() {
     const fetchFile = async () => {
       if (isFilePath(oldData.foto)) {
         const response = await axios.get(
-          `http://localhost:3001/file?filePath=${encodeURIComponent(
+          `${API_URL}/file?filePath=${encodeURIComponent(
             oldData.foto
           )}`,
           {
@@ -179,7 +180,7 @@ function FormUserData() {
     // }
 
     axios
-      .put(`http://localhost:3001/users/${id}`, formDataToSend, {
+      .put(`${API_URL}/users/${id}`, formDataToSend, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

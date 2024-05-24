@@ -12,6 +12,7 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import axios from 'axios'
 import { checkLogin } from '../features/AuthSlice'
 import { useDispatch, useSelector } from 'react-redux'
+import API_URL from '../config/config'
 
 const FormGrid = styled(Grid)(() => ({
   display: 'flex',
@@ -64,7 +65,7 @@ function FormSertifikat() {
     if (sertifikatId) {
       axios
         .get(
-          `http://localhost:3001/users/documents/sertifikat/${id}/${sertifikatId}`
+          `${API_URL}/users/documents/sertifikat/${id}/${sertifikatId}`
         )
         .then((response) => {
           const data = response.data.sertifikat
@@ -87,7 +88,7 @@ function FormSertifikat() {
     const fetchFile = async () => {
       if (isFilePath(oldData.media)) {
         const response = await axios.get(
-          `http://localhost:3001/file?filePath=${encodeURIComponent(
+          `${API_URL}/file?filePath=${encodeURIComponent(
             oldData.media
           )}`,
           {
@@ -161,11 +162,11 @@ function FormSertifikat() {
     let alertMessage = ''
 
     if (sertifikatId) {
-      endpoint = `http://localhost:3001/users/documents/sertifikat/${sertifikatId}`
+      endpoint = `${API_URL}/users/documents/sertifikat/${sertifikatId}`
       method = 'put'
       alertMessage = 'Sertifikat berhasil di-update'
     } else {
-      endpoint = `http://localhost:3001/users/documents/sertifikat`
+      endpoint = `${API_URL}/users/documents/sertifikat`
       method = 'post'
       alertMessage = 'Sertifikat berhasil ditambahkan'
     }

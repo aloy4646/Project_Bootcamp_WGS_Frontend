@@ -18,6 +18,7 @@ import {
 import axios from 'axios'
 import { checkLogin } from '../features/AuthSlice'
 import { useDispatch, useSelector } from 'react-redux'
+import API_URL from '../config/config';
 
 export default function ListKaryawan() {
   const [listKaryawan, setListKaryawan] = useState([])
@@ -39,7 +40,7 @@ export default function ListKaryawan() {
 
   useEffect(() => {
     if(!isError && user){
-      axios.get('http://localhost:3001/users').then((response) => {
+      axios.get(`${API_URL}/users`).then((response) => {
         setListKaryawan(response.data.listKaryawan)
       })
     }

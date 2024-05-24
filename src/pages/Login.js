@@ -14,6 +14,7 @@ import validator from 'validator'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { LoginUser, reset } from '../features/AuthSlice'
+import API_URL from '../config/config'
 
 export default function LoginView() {
   const theme = useTheme()
@@ -28,6 +29,7 @@ export default function LoginView() {
   const navigate = useNavigate()
 
   useEffect(() => {
+    console.log({API_URL});
     if (user || isSuccess) {
       dispatch(reset())
       navigate('/home')
