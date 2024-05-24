@@ -17,6 +17,13 @@ import axios from 'axios'
 import { useNavigate, useParams } from 'react-router-dom'
 import { checkLogin } from '../features/AuthSlice'
 import { useDispatch, useSelector } from 'react-redux'
+import { format, toZonedTime } from 'date-fns-tz'
+
+const convertToWIB = (dateString) => {
+  const timeZone = 'Asia/Jakarta'
+  const zonedDate = toZonedTime(dateString, timeZone)
+  return format(zonedDate, 'yyyy-MM-dd HH:mm:ss', { timeZone })
+}
 
 const headLabel = [
   { id: 'no', label: 'No' },
@@ -45,9 +52,11 @@ function ListLogs() {
   }, [isError, navigate])
   
   useEffect(() => {
-    if(!isError && user){
+    if (!isError && user) {
       axios.get(`http://localhost:3001/users/logs/${id}`).then((response) => {
-        setLogsKaryawan(response.data.logs)
+        //mengurutkan logs dimulai dari yang terbaru
+        const sortedLogs = response.data.logs.reverse()
+        setLogsKaryawan(sortedLogs)
       })
     }
   }, [isError, user, id])
@@ -83,9 +92,9 @@ function ListLogs() {
             {logsKaryawan.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((log, index) => (
                 <TableRow key={index}>
                   <TableCell component="th" scope="row">
-                  {page * rowsPerPage + index + 1}
+                    {logsKaryawan.length - (page * rowsPerPage + index)}
                   </TableCell>
-                  <TableCell>{log.date}</TableCell>
+                  <TableCell>{convertToWIB(log.date)}</TableCell>
                   <TableCell>{log.author}</TableCell>
                   <TableCell>{log.message}</TableCell>
                 </TableRow>

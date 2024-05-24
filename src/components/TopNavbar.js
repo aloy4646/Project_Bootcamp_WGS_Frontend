@@ -1,7 +1,7 @@
 import React from 'react'
 import { AppBar, Toolbar, Box } from '@mui/material'
 import { Link } from 'react-router-dom'
-import logo from '../logo_wgs.svg' // Path to your logo file
+import logo from '../logo_wgs.svg'
 
 function TopNavbar() {
     return (
