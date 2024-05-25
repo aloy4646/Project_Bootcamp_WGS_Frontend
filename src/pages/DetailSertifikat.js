@@ -194,7 +194,8 @@ function DetailSertifikat() {
             })}
           </Paper>
         </Grid>
-        {user && user.role === 'USER' && (
+        {/* eslint-disable-next-line */}
+        {user && user.id == id && (
           <Grid item xs={12}>
             <Button
               variant="contained"

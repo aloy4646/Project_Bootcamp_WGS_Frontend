@@ -56,7 +56,7 @@ function FormUserDokumen() {
   useEffect(() => {
     if(!isError && user){
       axios.get(`${API_URL}/users/dokumen/${id}`).then((response) => {
-        const data = response.data.karyawan
+        const data = response.data.user
         setOldData(data)
       })
     }
