@@ -123,11 +123,11 @@ function FormUserDokumen() {
 
     const formDataToSend = new FormData()
     let kosong = true
-
+    var oldDataChanged = {}
     for (const key in formData) {
-        
       if (formData[key] !== '' && formData[key] !== oldData[key]) {
         formDataToSend.append(key, formData[key])
+        oldDataChanged[key] = oldData[key]
         kosong = false
       }
     }
@@ -139,6 +139,7 @@ function FormUserDokumen() {
     }
 
     formDataToSend.append('message', message)
+    formDataToSend.append('oldDataChanged', JSON.stringify(oldDataChanged))
 
     axios
       .put(`${API_URL}/users/documents/${id}`, formDataToSend, {

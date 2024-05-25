@@ -174,14 +174,17 @@ function FormUserData() {
     }
 
     const formDataToSend = new FormData()
+    var oldDataChanged = {}
     for (const key in formData) {
       if (formData[key] !== oldData[key]) {
         formDataToSend.append(key, formData[key])
+        oldDataChanged[key] = oldData[key]
       }
     }
 
     if (selectedFile) {
       formDataToSend.append('foto', selectedFile)
+      oldDataChanged['foto'] = oldData['foto']
     }
     
     if ([...formDataToSend.entries()].length === 0) {
@@ -190,6 +193,7 @@ function FormUserData() {
     }
 
     formDataToSend.append('message', message)
+    formDataToSend.append('oldDataChanged', JSON.stringify(oldDataChanged))
 
     axios
       .put(`${API_URL}/users/${id}`, formDataToSend, {
