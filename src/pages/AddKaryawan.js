@@ -24,7 +24,7 @@ function AddKaryawan() {
   const [email_kantor, setEmailKantor] = useState('')
   const [akunBaru, setAkunBaru] = useState({})
   const dispatch = useDispatch()
-  const { isError, user } =  useSelector((state) => state.auth)
+  const { isError } =  useSelector((state) => state.auth)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -53,7 +53,6 @@ function AddKaryawan() {
 
     const body = {
       email_kantor,
-      idAdmin: user.id,
     }
 
     axios

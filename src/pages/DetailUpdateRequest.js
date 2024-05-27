@@ -131,12 +131,7 @@ function DetailUpdateRequest() {
   const handleAccept = () => {
     axios
       .put(
-        `${API_URL}/admin/update-request/accept/${update_requestId}`,
-        {
-          // body
-          idAdmin: user.id,
-        }
-      )
+        `${API_URL}/admin/update-request/accept/${update_requestId}`)
       .then(() => {
         alert('Update Request Accepted')
         navigate(`/karyawan/update-request`)
@@ -152,7 +147,6 @@ function DetailUpdateRequest() {
         `${API_URL}/admin/update-request/reject/${update_requestId}`,
         {
           // body
-          idAdmin: user.id,
           alasan: alasan,
         }
       )
