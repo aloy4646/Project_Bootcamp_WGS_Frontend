@@ -93,7 +93,7 @@ function ListLogs() {
             {logsKaryawan.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((log, index) => (
                 <TableRow key={index}>
                   <TableCell component="th" scope="row">
-                    {logsKaryawan.length - (page * rowsPerPage + index)}
+                    {page * rowsPerPage + index + 1}
                   </TableCell>
                   <TableCell>{convertToWIB(log.date)}</TableCell>
                   <TableCell>{log.author}</TableCell>

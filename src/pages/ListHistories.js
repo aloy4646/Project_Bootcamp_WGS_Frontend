@@ -96,7 +96,7 @@ function ListHistories() {
             {historiesKaryawan.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((history, index) => (
                 <TableRow key={index}>
                   <TableCell component="th" scope="row">
-                    {historiesKaryawan.length - (page * rowsPerPage + index)}
+                    {page * rowsPerPage + index + 1}
                   </TableCell>
                   <TableCell>{convertToWIB(history.date)}</TableCell>
                   <TableCell>{history.author}</TableCell>
@@ -105,7 +105,7 @@ function ListHistories() {
                     <Button
                       variant="contained"
                       color="primary"
-                      onClick={() => navigate(`/karyawan/histories/${id}/${historiesKaryawan.length - index}`)}
+                      onClick={() => navigate(`/karyawan/histories/${id}/${history.id}`)}
                     >
                       Detail
                     </Button>

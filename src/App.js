@@ -62,7 +62,7 @@ function App() {
               <Route path="/karyawan/update/form/dokumen/:id" element={user && user.role !== "SUPER ADMIN" ? <FormUserDokumen /> : <Navigate to="/" />} />
               <Route path="/karyawan/logs/:id" element={user && (user.role === "ADMIN" || user.role === 'AUDITOR') ? <ListLogs /> : <Navigate to="/" />} />
               <Route path="/karyawan/histories/:id" element={user && (user.role === "ADMIN" || user.role === 'AUDITOR') ? <ListHistories /> : <Navigate to="/" />} />
-              <Route path="/karyawan/histories/:id/:index" element={user && (user.role === "ADMIN" || user.role === 'AUDITOR') ? <DetailHistory /> : <Navigate to="/" />} />
+              <Route path="/karyawan/histories/:id/:historyId" element={user && (user.role === "ADMIN" || user.role === 'AUDITOR') ? <DetailHistory /> : <Navigate to="/" />} />
               <Route path="/karyawan/sertifikat/:id" element={user && user.role !== 'SUPER ADMIN' ? <ListSertifikat /> : <Navigate to="/" />} />
               <Route path="/karyawan/sertifikat/:id/:sertifikatId" element={user && user.role !== 'SUPER ADMIN' ? <DetailSertifikat /> : <Navigate to="/" />} />
               <Route path="/karyawan/sertifikat/:id/form" element={user && user.role !== 'SUPER ADMIN' ? <FormSertifikat /> : <Navigate to="/" />} />

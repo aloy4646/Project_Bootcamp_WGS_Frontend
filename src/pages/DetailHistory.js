@@ -18,7 +18,7 @@ function isFilePath(value) {
 }
 
 function DetailHistory() {
-  const { id, index } = useParams()
+  const { id, historyId } = useParams()
   const [detailHistory, setDetailHistory] = useState({})
   const [fileUrls, setFileUrls] = useState({})
   const navigate = useNavigate()
@@ -38,13 +38,13 @@ function DetailHistory() {
   useEffect(() => {
     if(!isError && user){
       axios
-        .get(`${API_URL}/users/histories/${id}`)
+        .get(`${API_URL}/users/histories/${id}/${historyId}`)
         .then((response) => {
-          setDetailHistory(response.data.histories[index-1])
+          setDetailHistory(response.data.history)
         })
     }
 
-  }, [isError, user, id, index])
+  }, [isError, user, id, historyId])
 
   //meminta data berupa file ke server
   useEffect(() => {
