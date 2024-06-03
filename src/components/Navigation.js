@@ -20,7 +20,7 @@ function Navigation() {
     ]
 
     if (user && user.role !== 'SUPER ADMIN') {
-      items.push({ to: `/karyawan/${user.id}`, text: 'Detail Karyawan', roles: ['USER', 'ADMIN', 'AUDITOR'] })
+      items.push({ to: `/karyawan/${user.id}`, text: 'Profile Karyawan', roles: ['USER', 'ADMIN', 'AUDITOR'] })
     }
 
     return items
