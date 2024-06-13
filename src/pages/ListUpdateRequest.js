@@ -58,7 +58,7 @@ export default function ListUpdateRequest() {
   useEffect(() => {
     if(!isError && user){
       axios.get(`${API_URL}/admin/update-request`).then((response) => {
-        setListUpdateRequest(response.data.update_requests)
+        setListUpdateRequest(response.data.data.update_requests)
       })
     }
   }, [isError, user])

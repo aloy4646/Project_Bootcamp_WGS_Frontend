@@ -68,7 +68,7 @@ function FormSertifikat() {
           `${API_URL}/users/documents/sertifikat/${id}/${sertifikatId}`
         )
         .then((response) => {
-          const data = response.data.sertifikat
+          const data = response.data.data.sertifikat
           setFormData({
             ...data,
             tanggal_terbit: formatTanggal(data.tanggal_terbit),

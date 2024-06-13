@@ -58,7 +58,7 @@ function ListSertifikat() {
       axios
         .get(`${API_URL}/users/documents/sertifikat/${id}`)
         .then((response) => {
-          setListSertifikat(response.data.listSertifikat)
+          setListSertifikat(response.data.data.listSertifikat)
         })
     }
   }, [isError, user, id])

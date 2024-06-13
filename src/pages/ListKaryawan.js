@@ -41,7 +41,7 @@ export default function ListKaryawan() {
   useEffect(() => {
     if(!isError && user){
       axios.get(`${API_URL}/users`).then((response) => {
-        setListKaryawan(response.data.listUser)
+        setListKaryawan(response.data.data.listUser)
       })
     }
   }, [isError, user])

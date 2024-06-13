@@ -40,7 +40,7 @@ function DetailHistory() {
       axios
         .get(`${API_URL}/users/histories/${id}/${historyId}`)
         .then((response) => {
-          setDetailHistory(response.data.history)
+          setDetailHistory(response.data.data.history)
         })
     }
 

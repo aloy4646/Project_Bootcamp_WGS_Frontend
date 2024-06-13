@@ -53,7 +53,7 @@ function FormUserData() {
   useEffect(() => {
     if(!isError && user){
       axios.get(`${API_URL}/users/data/${id}`).then((response) => {
-        const data = response.data.user
+        const data = response.data.data.user
 
         setFormData({
           ...data,

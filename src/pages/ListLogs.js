@@ -55,9 +55,7 @@ function ListLogs() {
   useEffect(() => {
     if (!isError && user) {
       axios.get(`${API_URL}/users/logs/${id}`).then((response) => {
-        //mengurutkan logs dimulai dari yang terbaru
-        const sortedLogs = response.data.logs.reverse()
-        setLogsKaryawan(sortedLogs)
+        setLogsKaryawan(response.data.data.logs)
       })
     }
   }, [isError, user, id])

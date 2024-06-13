@@ -58,9 +58,7 @@ function ListHistories() {
   useEffect(() => {
     if(!isError && user){
       axios.get(`${API_URL}/users/histories/${id}`).then((response) => {
-        //mengurutkan logs dimulai dari yang terbaru
-        const sortedHistories = response.data.histories.reverse()
-        setHistoriesKaryawan(sortedHistories)
+        setHistoriesKaryawan(response.data.data.histories)
       })
     }
   }, [isError, user, id])

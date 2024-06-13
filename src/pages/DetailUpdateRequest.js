@@ -57,7 +57,7 @@ function DetailUpdateRequest() {
       axios
         .get(`${API_URL}/admin/update-request/${update_requestId}`)
         .then((response) => {
-          setDetailUpdateRequest(response.data.update_request)
+          setDetailUpdateRequest(response.data.data.update_request)
         })
     }
   }, [update_requestId, isError, user])

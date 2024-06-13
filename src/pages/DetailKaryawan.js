@@ -37,7 +37,7 @@ function DetailKaryawan() {
   useEffect(() => {
     if(!isError && user){
       axios.get(`${API_URL}/users/${id}`).then((response) => {
-        const data = response.data.user
+        const data = response.data.data.user
         setDetailKaryawan({
           ...data,
           tanggal_lahir: formatTanggal(data.tanggal_lahir),
