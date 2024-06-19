@@ -144,7 +144,7 @@ function DetailSertifikat() {
   const handleDelete = () => {
     axios
       .delete(
-        `${API_URL}/users/documents/sertifikat/${sertifikatId}`)
+        `${API_URL}/users/documents/sertifikat/${id}/${sertifikatId}`)
       .then((response) => {
         alert('Sertifikat berhasil terhapus')
         navigate(-1)

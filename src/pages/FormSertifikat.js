@@ -157,19 +157,18 @@ function FormSertifikat() {
       return
     }
 
-    formDataToSend.append('userId', id)
-
-
     let endpoint = ''
     let method = ''
     let alertMessage = ''
 
     if (sertifikatId) {
-      endpoint = `${API_URL}/users/documents/sertifikat/${sertifikatId}`
+      endpoint = `${API_URL}/users/documents/sertifikat/${id}/${sertifikatId}`
       method = 'put'
       alertMessage = 'Sertifikat berhasil di-update'
     } else {
-      endpoint = `${API_URL}/users/documents/sertifikat`
+      endpoint = `${API_URL}/users/documents/sertifikat/${id}`
+      console.log("masuk sini")
+      console.log({endpoint})
       method = 'post'
       alertMessage = 'Sertifikat berhasil ditambahkan'
     }
